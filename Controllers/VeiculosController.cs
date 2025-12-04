@@ -1,11 +1,8 @@
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using trilha_net_fundamentos_desafio.Models;
 
-namespace trilha_net_fundamentos_desafio.Controllers
-{
+namespace trilha_net_fundamentos_desafio.Controllers;
     [Route("api/[controller]")]
-    [ApiController]
     public class VeiculosController : ControllerBase
     {
       static private List<Veiculo> veiculos = new List<Veiculo>
@@ -56,7 +53,8 @@ namespace trilha_net_fundamentos_desafio.Controllers
 
         return CreatedAtAction(
             nameof(GetVeiculoById),
-            new {id = veiculoNovo.Id, veiculoNovo});
+            new {id = veiculoNovo.Id},
+            veiculoNovo);
       }
 
       [HttpPut("{id}")]
@@ -84,4 +82,3 @@ namespace trilha_net_fundamentos_desafio.Controllers
         return NoContent();
       }
     }
-}
