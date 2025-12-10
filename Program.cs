@@ -1,8 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using trilha_net_fundamentos_desafio.Context;
 
 [assembly: ApiController]
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<VeiculoContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); // revisar e entender melhor código 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
@@ -14,7 +18,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 app.UseAuthorization();
 

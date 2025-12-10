@@ -1,84 +1,78 @@
 using Microsoft.AspNetCore.Mvc;
 using trilha_net_fundamentos_desafio.Models;
+using trilha_net_fundamentos_desafio.Context;
 
 namespace trilha_net_fundamentos_desafio.Controllers;
+
     [Route("api/[controller]")]
     public class VeiculosController : ControllerBase
     {
-      static private List<Veiculo> veiculos = new List<Veiculo>
-      {
-        new()
-        {
-          Id = 1,
-          Placa = "ABCD-1234",
-          HorasEstacionado = 5
-        },
-        new()
-        {
-          Id = 2,
-          Placa = "QWER-1234",
-          HorasEstacionado = 3
-        },
-        new()
-        {
-          Id = 3,
-          Placa = "DVOR-1234",
-          HorasEstacionado = 6
-        }
-      };
+      private readonly VeiculoContext _context;
 
-      [HttpGet]
-      public ActionResult<List<Veiculo>> GetVeiculos()
+      public VeiculosController(VeiculoContext context)
       {
-        return Ok(veiculos);
+        _context = context;
+      }
+
+      [HttpPost]
+      public IActionResult Create(Veiculo veiculo)
+      {
+        _context.Add(veiculo);
+        _context.SaveChanges();
+        return CreatedAtAction(nameof(Read), new { id = veiculo.Id}, veiculo); 
       }
 
       [HttpGet("{id}")]
-      public ActionResult<Veiculo> GetVeiculoById(int id) 
+      public IActionResult Read(int id)
       {
-        var veiculo = veiculos.FirstOrDefault(x => x.Id == id);
+        var veiculo = _context.Veiculos.Find(id);
         if (veiculo == null)
           return NotFound();
 
         return Ok(veiculo);
       }
 
-      [HttpPost]
-      public ActionResult<Veiculo> AddVeiculo(Veiculo veiculoNovo)
-      {
-        if(veiculoNovo == null)
-          return BadRequest();
-        
-        veiculos.Add(veiculoNovo);
-
-        return CreatedAtAction(
-            nameof(GetVeiculoById),
-            new {id = veiculoNovo.Id},
-            veiculoNovo);
-      }
-
+      [HttpGet("get/{placa?}")]
+      public IActionResult ReadByPlaca(string? placa)
+        {
+          if (string.IsNullOrEmpty(placa))
+          {
+            var veiculos = _context.Veiculos.ToList();
+            return Ok(veiculos);
+          }
+          else 
+          {
+            var veiculos = _context.Veiculos.Where(x => x.Placa.Contains(placa));
+            return Ok(veiculos);
+          }
+        }
+      
       [HttpPut("{id}")]
-      public IActionResult AtualizarVeiculo(int id, Veiculo veiculoAtualizado)
+      public IActionResult Update(int id, Veiculo veiculo)
       {
-        var veiculo = veiculos.FirstOrDefault(x => x.Id == id);
-        if (veiculo == null)
+        var veiculoBanco = _context.Veiculos.Find(id);
+        if(veiculoBanco == null)
           return NotFound();
 
-        veiculo.Id = veiculoAtualizado.Id;
-        veiculo.Placa = veiculoAtualizado.Placa;
-        veiculo.HorasEstacionado = veiculoAtualizado.HorasEstacionado;
+        veiculoBanco.Placa = veiculo.Placa;
+        veiculoBanco.HorasEstacionado = veiculo.HorasEstacionado;
 
-        return NoContent();
+        _context.Veiculos.Update(veiculoBanco);
+        _context.SaveChanges();
+
+        return Ok(veiculoBanco);
       }
 
       [HttpDelete("{id}")]
-      public IActionResult DeletarVeiculo(int id)
+      public IActionResult Delete(int id)
       {
-        var veiculo = veiculos.FirstOrDefault(x => x.Id == id);
-        if (veiculo == null)
+        var veiculoBanco = _context.Veiculos.Find(id);
+        if(veiculoBanco == null)
           return NotFound();
 
-        veiculos.Remove(veiculo);
+        _context.Veiculos.Remove(veiculoBanco);
+        _context.SaveChanges();
+
         return NoContent();
       }
     }
