@@ -6,7 +6,7 @@ using trilha_net_fundamentos_desafio.Context;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<VeiculoContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); // revisar e entender melhor código 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))); 
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
