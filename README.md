@@ -1,8 +1,8 @@
 # Sistema de Estacionamento - Desafio DIO & TIVIT (Improved Version)
 
-![Status](https://img.shields.io/badge/Status-Evoluído-success)
+![Status](https://img.shields.io/badge/Status-Evolving-success)
 ![.NET](https://img.shields.io/badge/.NET-9.0-purple)
-![Blazor](https://img.shields.io/badge/Blazor-Wasm-blue)
+![Blazor](https://img.shields.io/badge/Blazor-WASM-blue)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED)
 
 ## 📖 O Contexto
@@ -63,5 +63,12 @@ A infraestrutura foi desenhada para ser executada via Docker, eliminando a neces
 1. **Clone o repositório:**
    ```bash
    git clone https://github.com/gbad8/trilha-net-fundamentos-desafio.git
+   ```
 
-   [Em construção] ....
+2. **Suba o ambiente:** Na raiz do projeto (onde está o arquivo compose.yml), execute:
+   ```
+   docker compose up
+   ```
+3. **Acesse as interfaces:**
+   * **Frontend (Aplicação):** http://localhost:5001
+   * **Backend (Swagger/Docs):** http://localhost:8000/swagger
