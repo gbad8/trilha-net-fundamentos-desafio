@@ -47,6 +47,13 @@ namespace trilha_net_fundamentos_desafio.Controllers;
           }
         }
       
+      [HttpGet]
+      public IActionResult ReadAll()
+      {
+        var veiculos = _context.Veiculos.ToList();
+        return Ok(veiculos);
+      }
+
       [HttpPut("{id}")]
       public IActionResult Update(int id, Veiculo veiculo)
       {
