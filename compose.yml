@@ -1,0 +1,45 @@
+name: dev-environment
+services:
+  api:
+    image: mcr.microsoft.com/dotnet/sdk:9.0 
+    container_name: api-backend
+    volumes:
+      - ./:/app
+    working_dir: /app/Backend
+    ports:
+      - 8000:8080
+    command: dotnet run
+    networks:
+      - development
+
+  blazor:
+    image: mcr.microsoft.com/dotnet/sdk:9.0
+    container_name: blazor-frontend
+    volumes:
+      - ./:/app
+    working_dir: /app/Frontend
+    ports:
+      - 5001:8080
+    command: dotnet run
+    networks:
+     - development
+
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=TivitDioBootcamp*
+      - MSSQL_PID=Express
+    hostname: "db"
+    ports:
+      - 1433:1433
+    volumes:
+      - mssql-volume:/var/opt/mssql
+    networks:
+      - development
+
+networks:
+  development:
+
+volumes:
+  mssql-volume:
