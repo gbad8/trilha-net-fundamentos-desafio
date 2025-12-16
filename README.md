@@ -1,13 +1,13 @@
 # Sistema de Estacionamento - Desafio DIO & TIVIT (Improved Version)
 
 ![Status](https://img.shields.io/badge/Status-Evoluído-success)
-![.NET](https://img.shields.io/badge/.NET-8.0-purple)
+![.NET](https://img.shields.io/badge/.NET-9.0-purple)
 ![Blazor](https://img.shields.io/badge/Blazor-Wasm-blue)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED)
 
 ## 📖 O Contexto
 
-Este projeto foi proposto originalmente como o desafio final do módulo de **Fundamentos de .NET** do Bootcamp **TIVIT ** da [DIO](https://www.dio.me/).
+Este projeto foi proposto originalmente como o desafio final do módulo de **Fundamentos de .NET** do Bootcamp **TIVIT** da [DIO](https://www.dio.me/).
 
 ### 🎯 O Desafio Original (Escopo)
 A proposta inicial era construir uma **Aplicação Console** para gerenciar veículos, seguindo estas especificações:
@@ -27,8 +27,8 @@ Transformei a aplicação console monolítica em uma solução **Fullstack Conta
 
 | Característica | Proposta Original (Console) | Minha Implementação (Fullstack) |
 | :--- | :--- | :--- |
-| **Interface** | Menu de Texto (Console) | **Blazor WebAssembly** (SPA Interativa) |
-| **Lógica** | Classe local `Estacionamento.cs` | **API RESTful** (.NET 8 Controller) |
+| **Interface** | Menu de Texto (Console) | **Blazor WebAssembly** |
+| **Lógica** | Classe local `Estacionamento.cs` | **API RESTful** (.NET 9 Controller) |
 | **Persistência** | `List<string>` (Memória Volátil) | **SQL Server** + **Entity Framework Core** |
 | **Estrutura** | Monolito Simples | **Docker Compose** (Multi-container) |
 | **Modelagem** | Apenas Placa (string) | Entidade `Veiculo` (ID, Placa, Horas, Timestamp) |
@@ -38,15 +38,18 @@ Transformei a aplicação console monolítica em uma solução **Fullstack Conta
 O projeto agora opera com três serviços principais orquestrados:
 
 1.  **Backend (API):**
+    * Feito com base na imagem oficial do .NET SDK 9.0 da Microsoft
     * Substitui a classe `Estacionamento` original por um `Controller` de API.
     * Implementa o cálculo de cobrança e regras de negócio.
     * Conecta-se ao SQL Server via Entity Framework.
-2.  **Frontend (Client):**
+3.  **Frontend (Client):**
+    * Feito com base na imagem oficial do .NET SDK 9.0 da Microsoft.
     * Aplicação Blazor WebAssembly que consome a API.
     * Permite a visualização em tempo real dos veículos estacionados.
-3. **Banco de dados**:
-    * SQL Server
-    * Persiste os dados dos veículos
+5. **Banco de dados**:
+    * Feito com base na imagem oficial do SQL Server da Microsoft.
+    * Integração feita com o Entity Framework.
+    * Substitui o uso de memória local, fazendo persistir os dados dos veículos.
 
 ## ⚙️ Como Executar
 
