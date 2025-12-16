@@ -62,4 +62,6 @@ A infraestrutura foi desenhada para ser executada via Docker, eliminando a neces
 
 1. **Clone o repositório:**
    ```bash
-   git clone [https://github.com/SEU-USUARIO/NOME-DO-REPO.git](https://github.com/SEU-USUARIO/NOME-DO-REPO.git)
+   git clone https://github.com/gbad8/trilha-net-fundamentos-desafio.git
+
+   [Em construção] ....
