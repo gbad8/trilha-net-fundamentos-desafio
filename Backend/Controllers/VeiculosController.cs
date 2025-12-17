@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using trilha_net_fundamentos_desafio.Models;
 using trilha_net_fundamentos_desafio.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace trilha_net_fundamentos_desafio.Controllers;
 
@@ -15,17 +16,24 @@ namespace trilha_net_fundamentos_desafio.Controllers;
       }
 
       [HttpPost]
-      public IActionResult Create(Veiculo veiculo)
+      public async Task<IActionResult> Create(Veiculo veiculo)
       {
         _context.Add(veiculo);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
         return CreatedAtAction(nameof(Read), new { id = veiculo.Id}, veiculo); 
       }
 
-      [HttpGet("{id}")]
-      public IActionResult Read(int id)
+      [HttpGet]
+      public async Task<IActionResult> ReadAll()
       {
-        var veiculo = _context.Veiculos.Find(id);
+        var veiculos = await _context.Veiculos.ToListAsync();
+        return Ok(veiculos);
+      }
+
+      [HttpGet("{id}")]
+      public async Task<IActionResult> Read(int id)
+      {
+        var veiculo = await _context.Veiculos.FindAsync(id);
         if (veiculo == null)
           return NotFound();
 
@@ -33,31 +41,24 @@ namespace trilha_net_fundamentos_desafio.Controllers;
       }
 
       [HttpGet("get/{placa?}")]
-      public IActionResult ReadByPlaca(string? placa)
+      public async Task<IActionResult> ReadByPlaca(string? placa)
         {
           if (string.IsNullOrEmpty(placa))
           {
-            var veiculos = _context.Veiculos.ToList();
+            var veiculos = await _context.Veiculos.ToListAsync();
             return Ok(veiculos);
           }
           else 
           {
-            var veiculos = _context.Veiculos.Where(x => x.Placa.Contains(placa));
+            var veiculos = await _context.Veiculos.Where(x => x.Placa.Contains(placa)).ToListAsync();
             return Ok(veiculos);
           }
         }
-      
-      [HttpGet]
-      public IActionResult ReadAll()
-      {
-        var veiculos = _context.Veiculos.ToList();
-        return Ok(veiculos);
-      }
 
       [HttpPut("{id}")]
-      public IActionResult Update(int id, Veiculo veiculo)
+      public async Task<IActionResult> Update(int id, Veiculo veiculo)
       {
-        var veiculoBanco = _context.Veiculos.Find(id);
+        var veiculoBanco = await _context.Veiculos.FindAsync(id);
         if(veiculoBanco == null)
           return NotFound();
 
@@ -65,7 +66,7 @@ namespace trilha_net_fundamentos_desafio.Controllers;
         veiculoBanco.HorasEstacionado = veiculo.HorasEstacionado;
 
         _context.Veiculos.Update(veiculoBanco);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return Ok(veiculoBanco);
       }
