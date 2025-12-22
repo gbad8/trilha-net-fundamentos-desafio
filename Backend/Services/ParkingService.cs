@@ -4,8 +4,6 @@ namespace trilha_net_fundamentos_desafio.Services;
 
 public class ParkingService : IParkingService
 {
-  private const decimal HourlyPrice = 5.00m;
-
   public void CheckingIn(Veiculo veiculo)
   {
     veiculo.EntryTime = DateTime.Now;
@@ -19,11 +17,19 @@ public class ParkingService : IParkingService
       throw new InvalidOperationException("Este veículo já realizou Checkout");
 
     veiculo.DepartureTime = DateTime.Now;
-    TimeSpan permanency = veiculo.DepartureTime.Value - veiculo.EntryTime;
+    veiculo.TicketPrice = CalculateTicketPrice(veiculo);
+  }
 
-    if (permanency.TotalHours < 1)
-      veiculo.TicketPrice = HourlyPrice;
-    else
-      veiculo.TicketPrice = HourlyPrice * (decimal)permanency.TotalHours;
+  public decimal CalculateTicketPrice(Veiculo veiculo)
+  {
+    DateTime departureTime = veiculo.DepartureTime ?? DateTime.Now;
+
+    decimal hourlyPrice = (veiculo.Type == VehicleType.Car) ?
+      10.00m : 5.00m;
+
+    TimeSpan permanency = departureTime - veiculo.EntryTime;
+    decimal totalHours = Math.Ceiling((decimal)permanency.TotalHours);
+
+    return hourlyPrice * totalHours;
   }
 }

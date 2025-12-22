@@ -78,16 +78,16 @@ public class VeiculosController : ControllerBase
     }
   }
 
-  // [HttpDelete("{id}")]
-  // public IActionResult Delete(int id)
-  // {
-  //   var veiculoBanco = _context.Veiculos.Find(id);
-  //   if(veiculoBanco == null)
-  //     return NotFound();
-  //
-  //   _context.Veiculos.Remove(veiculoBanco);
-  //   _context.SaveChanges();
-  //
-  //   return NoContent();
-  // }
+  [HttpDelete("{id}")]
+  public IActionResult Delete(int id)
+  {
+    var veiculoBanco = _context.Veiculos.Find(id);
+    if (veiculoBanco == null)
+      return NotFound();
+
+    _context.Veiculos.Remove(veiculoBanco);
+    _context.SaveChanges();
+
+    return NoContent();
+  }
 }
