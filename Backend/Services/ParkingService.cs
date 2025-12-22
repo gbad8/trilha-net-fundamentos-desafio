@@ -19,7 +19,7 @@ public class ParkingService : IParkingService
       throw new InvalidOperationException("Este veículo já realizou Checkout");
 
     veiculo.DepartureTime = DateTime.Now;
-    TimeSpan permanency = veiculo.DepartureTime - veiculo.EntryTime;
+    TimeSpan permanency = veiculo.DepartureTime.Value - veiculo.EntryTime;
 
     if (permanency.TotalHours < 1)
       veiculo.TicketPrice = HourlyPrice;

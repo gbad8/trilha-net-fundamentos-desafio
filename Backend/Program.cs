@@ -7,7 +7,13 @@ using trilha_net_fundamentos_desafio.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<VeiculoContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+      builder.Configuration.GetConnectionString("DefaultConnection"),
+      sqlOptions => sqlOptions.EnableRetryOnFailure(
+        maxRetryCount: 5,
+        maxRetryDelay: TimeSpan.FromSeconds(10),
+        errorNumbersToAdd: null)
+      ));
 builder.Services.AddScoped<IParkingService, ParkingService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
