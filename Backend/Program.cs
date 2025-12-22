@@ -1,12 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using trilha_net_fundamentos_desafio.Context;
+using trilha_net_fundamentos_desafio.Services;
 
 [assembly: ApiController]
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<VeiculoContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<IParkingService, ParkingService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
