@@ -24,18 +24,37 @@ public class VeiculosController : ControllerBase
     _service.CheckingIn(veiculo);
     _context.Add(veiculo);
     await _context.SaveChangesAsync();
-    return CreatedAtAction(nameof(Read), new { id = veiculo.Id }, veiculo);
+
+    return CreatedAtAction(nameof(GetVehicleById), new { id = veiculo.Id }, veiculo);
   }
 
   [HttpGet]
-  public async Task<IActionResult> ReadAll()
+  public async Task<IActionResult> GetParkedVehicles()
   {
-    var veiculos = await _context.Veiculos.ToListAsync();
+    var veiculos = await _context.Veiculos
+                                 .Where(x => x.DepartureTime == null)
+                                 .ToListAsync();
+
+    foreach (Veiculo veiculo in veiculos)
+    {
+      veiculo.TicketPrice = _service.CalculateTicketPrice(veiculo);
+    }
+
+    return Ok(veiculos);
+  }
+
+  [HttpGet("history")]
+  public async Task<IActionResult> SearchHistory()
+  {
+    var veiculos = await _context.Veiculos
+                                 .Where(x => x.DepartureTime != null)
+                                 .ToListAsync();
+
     return Ok(veiculos);
   }
 
   [HttpGet("{id}")]
-  public async Task<IActionResult> Read(int id)
+  public async Task<IActionResult> GetVehicleById(int id)
   {
     var veiculo = await _context.Veiculos.FindAsync(id);
     if (veiculo == null)
@@ -44,25 +63,25 @@ public class VeiculosController : ControllerBase
     return Ok(veiculo);
   }
 
-  [HttpGet("get/{placa?}")]
-  public async Task<IActionResult> ReadByPlaca(string? placa)
+  [HttpGet("vehicleplate/{plate?}")]
+  public async Task<IActionResult> SearchByPlate(string? plate)
   {
-    if (string.IsNullOrEmpty(placa))
+    if (string.IsNullOrEmpty(plate))
     {
       var veiculos = await _context.Veiculos.ToListAsync();
       return Ok(veiculos);
     }
     else
     {
-      var veiculos = await _context.Veiculos.Where(x => x.Placa.Contains(placa)).ToListAsync();
+      var veiculos = await _context.Veiculos.Where(x => x.Placa.Contains(plate)).ToListAsync();
       return Ok(veiculos);
     }
   }
 
-  [HttpPut("{id}")]
-  public async Task<IActionResult> Checkout(int id)
+  [HttpPut("{vehicleid}")]
+  public async Task<IActionResult> Checkout(int vehicleid)
   {
-    var veiculoBanco = await _context.Veiculos.FindAsync(id);
+    var veiculoBanco = await _context.Veiculos.FindAsync(vehicleid);
     if (veiculoBanco == null)
       return NotFound();
 
@@ -78,10 +97,10 @@ public class VeiculosController : ControllerBase
     }
   }
 
-  [HttpDelete("{id}")]
-  public IActionResult Delete(int id)
+  [HttpDelete("{vehicleid}")]
+  public IActionResult Delete(int vehicleid)
   {
-    var veiculoBanco = _context.Veiculos.Find(id);
+    var veiculoBanco = _context.Veiculos.Find(vehicleid);
     if (veiculoBanco == null)
       return NotFound();
 
