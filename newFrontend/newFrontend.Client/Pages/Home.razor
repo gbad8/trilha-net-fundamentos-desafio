@@ -3,7 +3,7 @@
 @using newFrontend.Client.Services
 @inject IParkingService ParkingService
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Visão Geral - TIVIT & Dio</PageTitle>
 
 <br />
 <MudText Typo="Typo.h4" GutterBottom="true">Visão Geral</MudText>
@@ -17,13 +17,25 @@
   <ToolBarContent>
     <MudText Typo="Typo.h6">Veículos Estacionados</MudText>
     <MudSpacer />
-    <MudTextField @bind-Value="searchString1" Placeholder="Pesquisa" Adornment="Adornment.Start"
+    <MudTextField @bind-Value="searchString1" Placeholder="Pesquisa por placa" Adornment="Adornment.Start"
       AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
   </ToolBarContent>
   <HeaderContent>
-    <MudTh>Placa</MudTh>
-    <MudTh>Tipo</MudTh>
-    <MudTh>Entrada</MudTh>
+    <MudTh>
+      <MudTableSortLabel SortBy="new Func<Veiculo, object>(x => x.Placa)">
+        Placa
+      </MudTableSortLabel>
+    </MudTh>
+    <MudTh>
+      <MudTableSortLabel SortBy="new Func<Veiculo, object>(x => x.Type)">
+        Tipo
+      </MudTableSortLabel>
+    </MudTh>
+    <MudTh>
+      <MudTableSortLabel SortBy="new Func<Veiculo, object>(x => x.EntryTime)">
+        Entrada
+      </MudTableSortLabel>
+    </MudTh>
     <MudTh>Valor Estimado</MudTh>
   </HeaderContent>
   <RowTemplate>
