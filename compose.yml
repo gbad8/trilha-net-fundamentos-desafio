@@ -13,14 +13,14 @@ services:
       - development
 
   blazor:
-    image: mcr.microsoft.com/dotnet/sdk:10.0
+    image: mcr.microsoft.com/dotnet/sdk:9.0
     container_name: blazor-frontend
     volumes:
       - ./:/app
-    working_dir: /app/Frontend
+    working_dir: /app/newFrontend/newFrontend
     ports:
       - 5001:8080
-    command: dotnet run
+    command: dotnet watch run
     networks:
      - development
 

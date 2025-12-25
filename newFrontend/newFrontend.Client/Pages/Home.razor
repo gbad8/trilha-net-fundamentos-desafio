@@ -1,0 +1,81 @@
+﻿@page "/"
+@using newFrontend.Client.Models
+@using newFrontend.Client.Services
+@inject IParkingService ParkingService
+
+<PageTitle>Home</PageTitle>
+
+<br />
+<MudText Typo="Typo.h4" GutterBottom="true">Visão Geral</MudText>
+
+<MudText Typo="Typo.subtitle1">Nesta página, você tem uma visão geral dos veículos estacionados TIVIT & Dio Parking.
+</MudText>
+<br />
+
+<MudTable Items="@veiculos" Hover="true" Breakpoint="Breakpoint.Sm" Filter="new Func<Veiculo, bool>(FilterFunc1)"
+  Loading="@loading" LoadingProgressColor="Color.Info">
+  <ToolBarContent>
+    <MudText Typo="Typo.h6">Veículos Estacionados</MudText>
+    <MudSpacer />
+    <MudTextField @bind-Value="searchString1" Placeholder="Pesquisa" Adornment="Adornment.Start"
+      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+  </ToolBarContent>
+  <HeaderContent>
+    <MudTh>Placa</MudTh>
+    <MudTh>Tipo</MudTh>
+    <MudTh>Entrada</MudTh>
+    <MudTh>Valor Estimado</MudTh>
+  </HeaderContent>
+  <RowTemplate>
+    <MudTd DataLabel="Placa">
+      <MudChip T="string" Label="true">@context.Placa</MudChip>
+    </MudTd>
+    <MudTd DataLabel="Tipo">@FormatarTipo(context.Type)</MudTd>
+    <MudTd DataLabel="Entrada">@context.EntryTime.ToString("t")</MudTd>
+    <MudTd DataLabel="Valor">@context.TicketPrice?.ToString("C")</MudTd>
+  </RowTemplate>
+  <PagerContent>
+    <MudTablePager />
+  </PagerContent>
+</MudTable>
+
+@code {
+  private List<Veiculo> veiculos = new();
+  private bool loading = true;
+  private string searchString1 = "";
+
+  protected override async Task OnInitializedAsync()
+  {
+    try
+    {
+      veiculos = await ParkingService.GetVeiculosAsync();
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Erro: {ex.Message}");
+    }
+    finally
+    {
+      loading = false;
+    }
+  }
+
+  private string FormatarTipo(VehicleType tipo)
+  {
+    if (tipo == VehicleType.Motorcycle)
+      return "Moto";
+
+    return "Carro";
+  }
+
+  private bool FilterFunc1(Veiculo veiculo) => FilterFunc(veiculo, searchString1);
+
+  private bool FilterFunc(Veiculo veiculo, string searchString)
+  {
+    if (string.IsNullOrWhiteSpace(searchString))
+      return true;
+    if (veiculo.Placa.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+      return true;
+    return false;
+  }
+}

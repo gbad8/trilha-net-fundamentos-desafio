@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
 {
-  options.AddPolicy("PermitFrontend",
+  options.AddPolicy("AllowBlazorOrigin",
       policy =>
       {
         policy.AllowAnyOrigin()
@@ -40,7 +40,7 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 
-app.UseCors("PermitFrontend");
+app.UseCors("AllowBlazorOrigin");
 
 app.UseAuthorization();
 
