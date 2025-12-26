@@ -63,7 +63,7 @@ public class VeiculosController : ControllerBase
     return Ok(veiculo);
   }
 
-  [HttpPut("{id}")]
+  [HttpPatch("{id}")]
   public async Task<IActionResult> Checkout(int id)
   {
     var veiculoBanco = await _context.Veiculos.FindAsync(id);
