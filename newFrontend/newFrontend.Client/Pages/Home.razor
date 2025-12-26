@@ -12,8 +12,9 @@
 </MudText>
 <br />
 
-<MudTable Items="@veiculos" Hover="true" Breakpoint="Breakpoint.Sm" Filter="new Func<Veiculo, bool>(FilterFunc1)"
-  Loading="@loading" LoadingProgressColor="Color.Info">
+<MudTable Items="@veiculos" FixedHeader="@fixed_header" FixedFooter="@fixed_footer"
+  Height="@(fixed_header || fixed_footer ? "300px" : "")" Hover="true" Breakpoint="Breakpoint.Sm"
+  Filter="new Func<Veiculo, bool>(FilterFunc1)" Loading="@loading" LoadingProgressColor="Color.Info">
   <ToolBarContent>
     <MudText Typo="Typo.h6">Veículos Estacionados</MudText>
     <MudSpacer />
@@ -55,6 +56,8 @@
   private List<Veiculo> veiculos = new();
   private bool loading = true;
   private string searchString1 = "";
+  bool fixed_header = true;
+  bool fixed_footer = false;
 
   protected override async Task OnInitializedAsync()
   {
