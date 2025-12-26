@@ -1,6 +1,7 @@
 using MudBlazor.Services;
 using newFrontend.Components;
 using newFrontend.Client;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,9 @@ builder.Services.AddMudServices();
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddDataProtection()
+    .PersistKeysToFileSystem(new DirectoryInfo("/app/newFrontend/keys"));
 
 var app = builder.Build();
 

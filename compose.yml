@@ -20,6 +20,7 @@ services:
     container_name: blazor-frontend
     volumes:
       - ./:/app
+      - ./newFrontend/keys:/app/newFrontend/keys
     working_dir: /app/newFrontend/newFrontend
     ports:
       - 5001:8080
