@@ -11,6 +11,8 @@ services:
     command: dotnet run
     networks:
       - development
+    environment:
+      - TZ=America/Sao_Paulo
 
   blazor:
     image: mcr.microsoft.com/dotnet/sdk:9.0
