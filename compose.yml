@@ -13,20 +13,19 @@ services:
       - development
     environment:
       - TZ=America/Sao_Paulo
+      - DOTNET_RUNNING_IN_CONTAINER=true
 
   blazor:
     image: mcr.microsoft.com/dotnet/sdk:9.0
     container_name: blazor-frontend
     volumes:
       - ./:/app
-      - /app/newFrontend/bin
-      - /app/newFrontend/obj
-      - /app/newFrontend.Client/bin
-      - /app/newFrontend.Client/obj
     working_dir: /app/newFrontend/newFrontend
     ports:
       - 5001:8080
     command: dotnet watch run
+    environment:
+      - DOTNET_RUNNING_IN_CONTAINER=true
     networks:
      - development
 
