@@ -102,9 +102,8 @@
   private async Task MakeCheckout(Veiculo veiculo)
   {
     var parameters = new DialogParameters { ["VehicleId"] = veiculo.Id };
-    var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small };
 
-    var dialogReference = await DialogService.ShowAsync<CheckoutDialog>("Checkout", parameters, options);
+    var dialogReference = await DialogService.ShowAsync<CheckoutDialog>("Checkout", parameters);
     var result = await dialogReference.Result;
 
     if (!result.Canceled)

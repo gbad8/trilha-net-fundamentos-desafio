@@ -2,7 +2,9 @@
 
 <MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
 <MudPopoverProvider />
-<MudDialogProvider />
+<MudDialogProvider CloseButton="true" CloseOnEscapeKey="true" MaxWidth="MaxWidth.Medium" FullWidth="true"
+  Position="DialogPosition.Center" />
+
 <MudSnackbarProvider />
 <MudLayout>
   <MudAppBar Elevation="1">

@@ -16,19 +16,24 @@
       <MudDivider Class="mb-3" />
 
       <MudText><b>Placa:</b> @vehiclepreview.Placa</MudText>
-      <MudText Typo="Typo.h4" Color="Color.Success">
-        Total: @vehiclepreview.TicketPrice?.ToString("C2")
+
+      <MudText>
+        <b>Horário de Entrada:</b> @vehiclepreview.EntryTime.ToString("HH:mm:ss")
       </MudText>
 
-      <MudText Typo="Typo.caption">
-        Horário de Saída: @vehiclepreview.DepartureTime?.ToString("HH:mm:ss")
+      <MudText>
+        <b>Horário de saída:</b> @vehiclepreview.DepartureTime?.ToString("HH:mm:ss")
+      </MudText>
+
+      <MudText Typo="Typo.h5" Color="Color.Success">
+        Total: @vehiclepreview.TicketPrice?.ToString("C2")
       </MudText>
     }
   </DialogContent>
   <DialogActions>
-    <MudButton OnClick="Cancel">Cancel</MudButton>
+    <MudButton OnClick="Cancel">Cancelar</MudButton>
     <MudButton Color="Color.Success" Variant="Variant.Filled" Disabled="@(vehiclepreview == null)" OnClick="Confirm">
-      Confirm</MudButton>
+      Confirmar</MudButton>
   </DialogActions>
 </MudDialog>
 
