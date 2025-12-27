@@ -103,7 +103,7 @@
   {
     var parameters = new DialogParameters { ["VehicleId"] = veiculo.Id };
 
-    var dialogReference = await DialogService.ShowAsync<CheckoutDialog>("Checkout", parameters);
+    var dialogReference = await DialogService.ShowAsync<CheckoutDialog>("Realizar Checkout", parameters);
     var result = await dialogReference.Result;
 
     if (!result.Canceled)
