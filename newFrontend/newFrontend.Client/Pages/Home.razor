@@ -25,17 +25,17 @@
   </ToolBarContent>
   <HeaderContent>
     <MudTh>
-      <MudTableSortLabel SortBy="new Func<Veiculo, object>(x => x.Placa)">
+      <MudTableSortLabel SortBy="@((Veiculo veiculo) => veiculo.Placa)">
         Placa
       </MudTableSortLabel>
     </MudTh>
     <MudTh>
-      <MudTableSortLabel SortBy="new Func<Veiculo, object>(x => x.Type)">
+      <MudTableSortLabel SortBy="@((Veiculo veiculo) => veiculo.Type)">
         Tipo
       </MudTableSortLabel>
     </MudTh>
     <MudTh>
-      <MudTableSortLabel SortBy="new Func<Veiculo, object>(x => x.EntryTime)">
+      <MudTableSortLabel SortBy="@((Veiculo veiculo) => veiculo.EntryTime)">
         Entrada
       </MudTableSortLabel>
     </MudTh>
