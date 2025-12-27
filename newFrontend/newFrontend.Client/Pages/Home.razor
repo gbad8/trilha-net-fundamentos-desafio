@@ -16,7 +16,7 @@
 
 <MudTable Items="@veiculos" FixedHeader="@fixed_header" FixedFooter="@fixed_footer"
   Height="@(fixed_header || fixed_footer ? "300px" : "")" Hover="true" Breakpoint="Breakpoint.Sm"
-  Filter="new Func<Veiculo, bool>(FilterFunc1)" Loading="@loading" LoadingProgressColor="Color.Info">
+  Filter="@(veiculo => FilterFunc(veiculo, searchString1))" Loading="@loading" LoadingProgressColor="Color.Info">
   <ToolBarContent>
     <MudText Typo="Typo.h6">Veículos Estacionados</MudText>
     <MudSpacer />
@@ -89,8 +89,6 @@
 
     return "Carro";
   }
-
-  private bool FilterFunc1(Veiculo veiculo) => FilterFunc(veiculo, searchString1);
 
   private bool FilterFunc(Veiculo veiculo, string searchString)
   {
