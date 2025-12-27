@@ -11,12 +11,12 @@ public class ParkingService : IParkingService
     veiculo.TicketPrice = null;
   }
 
-  public void CheckingOut(Veiculo veiculo)
+  public void CheckingOut(Veiculo veiculo, DateTime checkoutTime)
   {
     if (veiculo.DepartureTime != null)
       throw new InvalidOperationException("Este veículo já realizou Checkout");
 
-    veiculo.DepartureTime = DateTime.Now;
+    veiculo.DepartureTime = checkoutTime;
     veiculo.TicketPrice = CalculateTicketPrice(veiculo);
   }
 

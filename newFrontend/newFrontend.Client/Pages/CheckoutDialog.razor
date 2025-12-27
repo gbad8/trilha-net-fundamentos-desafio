@@ -1,0 +1,56 @@
+@using newFrontend.Client.Models
+@using newFrontend.Client.Services
+@inject IParkingService ParkingService
+@inject HttpClient Http
+
+<MudDialog>
+  <DialogContent>
+    @if (vehiclepreview == null)
+    {
+      <MudProgressCircular Indeterminate="true" />
+      <MudText>Carregando informações ...</MudText>
+    }
+    else
+    {
+      <MudText Typo="Typo.h6">Confirmação de Saída</MudText>
+      <MudDivider Class="mb-3" />
+
+      <MudText><b>Placa:</b> @vehiclepreview.Placa</MudText>
+      <MudText Typo="Typo.h4" Color="Color.Success">
+        Total: @vehiclepreview.TicketPrice?.ToString("C2")
+      </MudText>
+
+      <MudText Typo="Typo.caption">
+        Horário de Saída: @vehiclepreview.DepartureTime?.ToString("HH:mm:ss")
+      </MudText>
+    }
+  </DialogContent>
+  <DialogActions>
+    <MudButton OnClick="Cancel">Cancel</MudButton>
+    <MudButton Color="Color.Success" Variant="Variant.Filled" Disabled="@(vehiclepreview == null)" OnClick="Confirm">
+      Confirm</MudButton>
+  </DialogActions>
+</MudDialog>
+
+@code {
+  [CascadingParameter] IMudDialogInstance? MudDialog { get; set; }
+
+  [Parameter] public int VehicleId { get; set; }
+
+  private Veiculo? vehiclepreview;
+
+  protected override async Task OnInitializedAsync()
+  {
+    vehiclepreview = await ParkingService.CheckoutPreviewAsync(VehicleId);
+  }
+
+  private void Cancel() => MudDialog?.Cancel();
+
+  private void Confirm()
+  {
+    if (vehiclepreview?.DepartureTime != null)
+    {
+      MudDialog?.Close(DialogResult.Ok(vehiclepreview.DepartureTime.Value));
+    }
+  }
+}

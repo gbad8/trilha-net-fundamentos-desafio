@@ -6,7 +6,7 @@ public interface IParkingService
 {
   void CheckingIn(Veiculo veiculo);
 
-  void CheckingOut(Veiculo veiculo);
+  void CheckingOut(Veiculo veiculo, DateTime date);
 
   public decimal CalculateTicketPrice(Veiculo veiculo);
 }

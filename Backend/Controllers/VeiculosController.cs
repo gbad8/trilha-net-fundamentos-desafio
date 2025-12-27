@@ -60,11 +60,14 @@ public class VeiculosController : ControllerBase
     if (veiculo == null)
       return NotFound();
 
+    veiculo.DepartureTime = DateTime.Now;
+    veiculo.TicketPrice = _service.CalculateTicketPrice(veiculo);
+
     return Ok(veiculo);
   }
 
   [HttpPatch("{id}")]
-  public async Task<IActionResult> Checkout(int id)
+  public async Task<IActionResult> Checkout(int id, [FromBody] DateTime checkotTime)
   {
     var veiculoBanco = await _context.Veiculos.FindAsync(id);
     if (veiculoBanco == null)
@@ -72,7 +75,7 @@ public class VeiculosController : ControllerBase
 
     try
     {
-      _service.CheckingOut(veiculoBanco);
+      _service.CheckingOut(veiculoBanco, checkotTime);
       await _context.SaveChangesAsync();
       return Ok(veiculoBanco);
     }

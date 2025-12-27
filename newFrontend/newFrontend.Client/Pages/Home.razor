@@ -1,7 +1,9 @@
 ﻿@page "/"
 @using newFrontend.Client.Models
 @using newFrontend.Client.Services
+@inject IDialogService DialogService
 @inject IParkingService ParkingService
+@inject ISnackbar Snackbar
 
 <PageTitle>Visão Geral - T&D</PageTitle>
 
@@ -38,6 +40,7 @@
       </MudTableSortLabel>
     </MudTh>
     <MudTh>Valor Estimado</MudTh>
+    <MudTh>Ações</MudTh>
   </HeaderContent>
   <RowTemplate>
     <MudTd DataLabel="Placa">
@@ -46,6 +49,10 @@
     <MudTd DataLabel="Tipo">@FormatarTipo(context.Type)</MudTd>
     <MudTd DataLabel="Entrada">@context.EntryTime.ToString("t")</MudTd>
     <MudTd DataLabel="Valor">@context.TicketPrice?.ToString("C")</MudTd>
+    <MudTd DataLabel="Ações">
+      <MudIconButton Icon="@Icons.Material.Filled.AttachMoney" Color="Color.Success" title="Fazer Checkout"
+        OnClick="@(() => MakeCheckout(context))" />
+    </MudTd>
   </RowTemplate>
   <PagerContent>
     <MudTablePager />
@@ -92,5 +99,31 @@
     if (veiculo.Placa.Contains(searchString, StringComparison.OrdinalIgnoreCase))
       return true;
     return false;
+  }
+
+  private async Task MakeCheckout(Veiculo veiculo)
+  {
+    var parameters = new DialogParameters { ["VehicleId"] = veiculo.Id };
+    var options = new DialogOptions { CloseButton = true, MaxWidth = MaxWidth.Small };
+
+    var dialogReference = await DialogService.ShowAsync<CheckoutDialog>("Checkout", parameters, options);
+    var result = await dialogReference.Result;
+
+    if (!result.Canceled)
+    {
+      if (result.Data is DateTime previewDate)
+      {
+        var response = await ParkingService.MakeCheckoutAsync(veiculo.Id, previewDate);
+        if (response.IsSuccessStatusCode)
+        {
+          Snackbar.Add($"Checkout de {veiculo.Placa} realizado!", Severity.Success);
+          veiculos = await ParkingService.GetVeiculosAsync();
+        }
+        else
+        {
+          Snackbar.Add("Erro ao realizar checkout.", Severity.Error);
+        }
+      }
+    }
   }
 }
