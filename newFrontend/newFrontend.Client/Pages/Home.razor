@@ -46,11 +46,11 @@
     <MudTd DataLabel="Placa">
       <MudChip T="string" Label="true">@context.Placa</MudChip>
     </MudTd>
-    <MudTd DataLabel="Tipo">@FormatarTipo(context.Type)</MudTd>
+    <MudTd DataLabel="Tipo">@FormatType(context.Type)</MudTd>
     <MudTd DataLabel="Entrada">@context.EntryTime.ToString("t")</MudTd>
     <MudTd DataLabel="Valor">@context.TicketPrice?.ToString("C")</MudTd>
     <MudTd DataLabel="Ações">
-      <MudIconButton Icon="@Icons.Material.Filled.AttachMoney" Color="Color.Success" title="Fazer Checkout"
+      <MudIconButton Icon="@Icons.Material.Filled.CarRental" Color="Color.Success" title="Fazer Checkout"
         OnClick="@(() => MakeCheckout(context))" />
     </MudTd>
   </RowTemplate>
@@ -82,7 +82,7 @@
     }
   }
 
-  private string FormatarTipo(VehicleType tipo)
+  private string FormatType(VehicleType tipo)
   {
     if (tipo == VehicleType.Motorcycle)
       return "Moto";
