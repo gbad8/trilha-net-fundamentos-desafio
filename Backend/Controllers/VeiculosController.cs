@@ -7,16 +7,10 @@ using trilha_net_fundamentos_desafio.Services;
 namespace trilha_net_fundamentos_desafio.Controllers;
 
 [Route("api/[controller]")]
-public class VeiculosController : ControllerBase
+public class VeiculosController(VeiculoContext context, IParkingService service) : ControllerBase
 {
-  private readonly VeiculoContext _context;
-  private readonly IParkingService _service;
-
-  public VeiculosController(VeiculoContext context, IParkingService service)
-  {
-    _context = context;
-    _service = service;
-  }
+  private readonly VeiculoContext _context = context;
+  private readonly IParkingService _service = service;
 
   [HttpPost]
   public async Task<IActionResult> Checkin(Veiculo veiculo)

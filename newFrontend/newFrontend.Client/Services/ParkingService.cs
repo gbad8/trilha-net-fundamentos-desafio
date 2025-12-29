@@ -3,14 +3,9 @@ using System.Net.Http.Json;
 
 namespace newFrontend.Client.Services;
 
-public class ParkingService : IParkingService
+public class ParkingService(HttpClient http) : IParkingService
 {
-  private readonly HttpClient _http;
-
-  public ParkingService(HttpClient http)
-  {
-    _http = http;
-  }
+  private readonly HttpClient _http = http;
 
   public async Task<List<Veiculo>> GetVeiculosAsync()
   {
