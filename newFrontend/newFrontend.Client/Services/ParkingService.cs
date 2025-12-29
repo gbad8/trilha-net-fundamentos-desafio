@@ -9,7 +9,7 @@ public class ParkingService(HttpClient http) : IParkingService
 
   public async Task<List<Veiculo>> GetVeiculosAsync()
   {
-    return await _http.GetFromJsonAsync<List<Veiculo>>("api/veiculos") ?? new List<Veiculo>();
+    return await _http.GetFromJsonAsync<List<Veiculo>>("api/veiculos") ?? [];
   }
 
   public async Task<Veiculo> CheckoutPreviewAsync(int id)
