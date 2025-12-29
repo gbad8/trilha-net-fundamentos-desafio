@@ -106,19 +106,22 @@
     var dialogReference = await DialogService.ShowAsync<CheckoutDialog>("Realizar Checkout", parameters);
     var result = await dialogReference.Result;
 
-    if (!result.Canceled)
+    if (result is not null)
     {
-      if (result.Data is DateTime previewDate)
+      if (!result.Canceled)
       {
-        var response = await ParkingService.MakeCheckoutAsync(veiculo.Id, previewDate);
-        if (response.IsSuccessStatusCode)
+        if (result.Data is DateTime previewDate)
         {
-          Snackbar.Add($"Checkout de {veiculo.Placa} realizado!", Severity.Success);
-          veiculos = await ParkingService.GetVeiculosAsync();
-        }
-        else
-        {
-          Snackbar.Add("Erro ao realizar checkout.", Severity.Error);
+          var response = await ParkingService.MakeCheckoutAsync(veiculo.Id, previewDate);
+          if (response.IsSuccessStatusCode)
+          {
+            Snackbar.Add($"Checkout de {veiculo.Placa} realizado!", Severity.Success);
+            veiculos = await ParkingService.GetVeiculosAsync();
+          }
+          else
+          {
+            Snackbar.Add("Erro ao realizar checkout.", Severity.Error);
+          }
         }
       }
     }

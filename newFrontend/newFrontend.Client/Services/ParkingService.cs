@@ -19,7 +19,8 @@ public class ParkingService : IParkingService
 
   public async Task<Veiculo> CheckoutPreviewAsync(int id)
   {
-    return await _http.GetFromJsonAsync<Veiculo>($"api/veiculos/{id}");
+    return await _http.GetFromJsonAsync<Veiculo>($"api/veiculos/{id}")
+      ?? throw new InvalidOperationException("Veículo não encontrado na base de dados.\n Entre em contato com o administrador do sistema");
   }
 
   public async Task<HttpResponseMessage> MakeCheckoutAsync(int id, DateTime date)
