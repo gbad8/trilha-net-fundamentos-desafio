@@ -10,7 +10,8 @@
 <br />
 <MudText Typo="Typo.h4" GutterBottom="true">Visão Geral</MudText>
 
-<MudText Typo="Typo.subtitle1">Nesta página, você tem uma visão geral dos veículos estacionados TIVIT & Dio Parking.
+<MudText Typo="Typo.subtitle1">Nesta página, você tem uma visão geral dos veículos estacionados no T&D Parking. Clique
+  no íconce da coluna "Ações" para realizar o checkout.
 </MudText>
 <br />
 
@@ -47,7 +48,7 @@
       <MudChip T="string" Label="true">@context.Placa</MudChip>
     </MudTd>
     <MudTd DataLabel="Tipo">@FormatType(context.Type)</MudTd>
-    <MudTd DataLabel="Entrada">@context.EntryTime.ToString("t")</MudTd>
+    <MudTd DataLabel="Entrada">@context.EntryTime.ToString("g")</MudTd>
     <MudTd DataLabel="Valor">@context.TicketPrice?.ToString("C")</MudTd>
     <MudTd DataLabel="Ações">
       <MudIconButton Icon="@Icons.Material.Filled.CarRental" Color="Color.Success" title="Fazer Checkout"

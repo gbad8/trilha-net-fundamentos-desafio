@@ -1,15 +1,23 @@
+@page "/history"
+@using newFrontend.Client.Models
+@using newFrontend.Client.Services
+@inject IDialogService DialogService
+@inject IParkingService ParkingService
+@inject ISnackbar Snackbar
+
 <PageTitle> Histórico - T&D</PageTitle>
 
 <br />
-<MudText Typo="Typo.h4" GutterBottom="true">Visão Geral</MudText>
+<MudText Typo="Typo.h4" GutterBottom="true">Histórico</MudText>
 
-<MudText Typo="Typo.subtitle1">Nesta página, você tem uma visão geral dos veículos estacionados TIVIT & Dio Parking.
+<MudText Typo="Typo.subtitle1">Nesta página, você pode verificar o histórico de veículos estacionados no T&D Parking.
 </MudText>
 <br />
 
 <MudTable Items="@veiculos" FixedHeader="@fixed_header" FixedFooter="@fixed_footer"
   Height="@(fixed_header || fixed_footer ? "300px" : "")" Hover="true" Breakpoint="Breakpoint.Sm"
-  Filter="@(veiculo => FilterFunc(veiculo, searchString1))" Loading="@loading" LoadingProgressColor="Color.Info">
+  Filter="@(veiculo => FilterFunc(veiculo, searchString1))" Loading="@loading" LoadingProgressColor="Color.Info"
+  MultiSelection="true" @bind-SelectedItems="selectedItems">
   <ToolBarContent>
     <MudText Typo="Typo.h6">Histórico de Veículos Estacionados</MudText>
     <MudSpacer />
@@ -32,22 +40,61 @@
         Entrada
       </MudTableSortLabel>
     </MudTh>
-    <MudTh>Valor Estimado</MudTh>
-    <MudTh>Ações</MudTh>
+    <MudTh>Saída</MudTh>
+    <MudTh>Valor Cobrado</MudTh>
   </HeaderContent>
   <RowTemplate>
     <MudTd DataLabel="Placa">
       <MudChip T="string" Label="true">@context.Placa</MudChip>
     </MudTd>
     <MudTd DataLabel="Tipo">@FormatType(context.Type)</MudTd>
-    <MudTd DataLabel="Entrada">@context.EntryTime.ToString("t")</MudTd>
+    <MudTd DataLabel="Entrada">@context.EntryTime.ToString("g")</MudTd>
+    <MudTd DataLabel="Saída">@context.DepartureTime?.ToString("g")</MudTd>
     <MudTd DataLabel="Valor">@context.TicketPrice?.ToString("C")</MudTd>
-    <MudTd DataLabel="Ações">
-      <MudIconButton Icon="@Icons.Material.Filled.CarRental" Color="Color.Success" title="Fazer Checkout"
-        OnClick="@(() => MakeCheckout(context))" />
-    </MudTd>
   </RowTemplate>
   <PagerContent>
     <MudTablePager />
   </PagerContent>
 </MudTable>
+
+@code {
+  private List<Veiculo> veiculos = new();
+  private bool loading = true;
+  private string searchString1 = "";
+  private HashSet<Veiculo> selectedItems = new HashSet<Veiculo>();
+  bool fixed_header = true;
+  bool fixed_footer = false;
+
+  protected override async Task OnInitializedAsync()
+  {
+    try
+    {
+      veiculos = await ParkingService.GetHistoryAsync();
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Erro: {ex.Message}");
+    }
+    finally
+    {
+      loading = false;
+    }
+  }
+
+  private string FormatType(VehicleType tipo)
+  {
+    if (tipo == VehicleType.Motorcycle)
+      return "Moto";
+
+    return "Carro";
+  }
+
+  private bool FilterFunc(Veiculo veiculo, string searchString)
+  {
+    if (string.IsNullOrWhiteSpace(searchString))
+      return true;
+    if (veiculo.Placa.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+      return true;
+    return false;
+  }
+}

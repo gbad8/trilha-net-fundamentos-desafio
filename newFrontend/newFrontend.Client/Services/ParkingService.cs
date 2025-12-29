@@ -12,6 +12,11 @@ public class ParkingService(HttpClient http) : IParkingService
     return await _http.GetFromJsonAsync<List<Veiculo>>("api/veiculos") ?? [];
   }
 
+  public async Task<List<Veiculo>> GetHistoryAsync()
+  {
+    return await _http.GetFromJsonAsync<List<Veiculo>>("api/veiculos/history") ?? [];
+  }
+
   public async Task<Veiculo> CheckoutPreviewAsync(int id)
   {
     return await _http.GetFromJsonAsync<Veiculo>($"api/veiculos/{id}")
