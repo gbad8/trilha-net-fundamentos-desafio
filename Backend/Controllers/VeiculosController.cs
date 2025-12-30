@@ -61,7 +61,7 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   }
 
   [HttpPatch("{id}")]
-  public async Task<IActionResult> Checkout(int id, [FromBody] DateTime checkotTime)
+  public async Task<IActionResult> Checkout(int id, DateTime checkotTime)
   {
     var veiculoBanco = await _context.Veiculos.FindAsync(id);
     if (veiculoBanco == null)
@@ -77,10 +77,11 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
     {
       return BadRequest(ex.Message);
     }
+
   }
 
   [HttpDelete("Delete")]
-  public async Task<IActionResult> DeleteVehiclesInBatch([FromQuery] string ids)
+  public async Task<IActionResult> DeleteVehiclesInBatch(string ids)
   {
     // Mantaining split and parse here only for test. Implementing a DTO soon.
     if (string.IsNullOrWhiteSpace(ids))
