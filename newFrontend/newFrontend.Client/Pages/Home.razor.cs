@@ -1,0 +1,75 @@
+﻿namespace newFrontend.Client.Pages;
+
+using MudBlazor;
+using newFrontend.Client.Models;
+
+public partial class Home
+{
+  private List<Veiculo> veiculos = new();
+  private bool loading = true;
+  private string searchString1 = "";
+  bool fixed_header = true;
+  bool fixed_footer = false;
+
+  protected override async Task OnInitializedAsync()
+  {
+    try
+    {
+      veiculos = await ParkingService.GetVeiculosAsync();
+    }
+    catch (Exception ex)
+    {
+      Console.WriteLine($"Erro: {ex.Message}");
+    }
+    finally
+    {
+      loading = false;
+    }
+  }
+
+  private string FormatType(VehicleType tipo)
+  {
+    if (tipo == VehicleType.Motorcycle)
+      return "Moto";
+
+    return "Carro";
+  }
+
+  private bool FilterFunc(Veiculo veiculo, string searchString)
+  {
+    if (string.IsNullOrWhiteSpace(searchString))
+      return true;
+    if (veiculo.Placa.Contains(searchString, StringComparison.OrdinalIgnoreCase))
+      return true;
+    return false;
+  }
+
+  private async Task MakeCheckout(Veiculo veiculo)
+  {
+    var parameters = new DialogParameters { ["VehicleId"] = veiculo.Id };
+
+    var dialogReference = await DialogService.ShowAsync<CheckoutDialog>("Realizar Checkout", parameters);
+    var result = await dialogReference.Result;
+
+    if (result is not null)
+    {
+      if (!result.Canceled)
+      {
+        if (result.Data is DateTime previewDate)
+        {
+          var response = await ParkingService.MakeCheckoutAsync(veiculo.Id, previewDate);
+          if (response.IsSuccessStatusCode)
+          {
+            Snackbar.Add($"Checkout de {veiculo.Placa} realizado!", Severity.Success);
+            veiculos = await ParkingService.GetVeiculosAsync();
+          }
+          else
+          {
+            Snackbar.Add("Erro ao realizar checkout.", Severity.Error);
+          }
+        }
+      }
+    }
+  }
+}
+

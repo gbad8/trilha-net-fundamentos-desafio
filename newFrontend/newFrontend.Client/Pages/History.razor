@@ -1,4 +1,5 @@
 @page "/history"
+@using newFrontend.Client.Pages
 @using newFrontend.Client.Models
 @using newFrontend.Client.Services
 @inject IDialogService DialogService
@@ -10,8 +11,20 @@
 <br />
 <MudText Typo="Typo.h4" GutterBottom="true">Histórico</MudText>
 
-<MudText Typo="Typo.subtitle1">Nesta página, você pode verificar o histórico de veículos estacionados no T&D Parking.
-</MudText>
+<MudStack Row="true" AlignItems="AlignItems.Center">
+  <MudText Typo="Typo.subtitle1">Nesta página, você pode verificar o histórico de veículos estacionados no T&D Parking.
+    <br />Selecione os veículos que você deseja excluir e clique no botão "Excluir do Histórico" ao lado.
+  </MudText>
+
+  <MudSpacer />
+
+  <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Medium"
+    DropShadow="false">Excluir do Histórico</MudButton>
+
+  <MudSpacer />
+
+</MudStack>
+
 <br />
 
 <MudTable Items="@veiculos" FixedHeader="@fixed_header" FixedFooter="@fixed_footer"
@@ -56,45 +69,3 @@
     <MudTablePager />
   </PagerContent>
 </MudTable>
-
-@code {
-  private List<Veiculo> veiculos = new();
-  private bool loading = true;
-  private string searchString1 = "";
-  private HashSet<Veiculo> selectedItems = new HashSet<Veiculo>();
-  bool fixed_header = true;
-  bool fixed_footer = false;
-
-  protected override async Task OnInitializedAsync()
-  {
-    try
-    {
-      veiculos = await ParkingService.GetHistoryAsync();
-    }
-    catch (Exception ex)
-    {
-      Console.WriteLine($"Erro: {ex.Message}");
-    }
-    finally
-    {
-      loading = false;
-    }
-  }
-
-  private string FormatType(VehicleType tipo)
-  {
-    if (tipo == VehicleType.Motorcycle)
-      return "Moto";
-
-    return "Carro";
-  }
-
-  private bool FilterFunc(Veiculo veiculo, string searchString)
-  {
-    if (string.IsNullOrWhiteSpace(searchString))
-      return true;
-    if (veiculo.Placa.Contains(searchString, StringComparison.OrdinalIgnoreCase))
-      return true;
-    return false;
-  }
-}
