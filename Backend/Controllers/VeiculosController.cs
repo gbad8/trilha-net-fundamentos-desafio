@@ -61,7 +61,7 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   }
 
   [HttpPatch("{id}")]
-  public async Task<IActionResult> Checkout(int id, DateTime checkotTime)
+  public async Task<IActionResult> Checkout(int id, [FromBody] DateTime checkotTime)
   {
     var veiculoBanco = await _context.Veiculos.FindAsync(id);
     if (veiculoBanco == null)

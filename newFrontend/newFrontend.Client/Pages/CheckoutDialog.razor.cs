@@ -23,7 +23,7 @@ public partial class CheckoutDialog
   {
     if (vehiclepreview?.DepartureTime != null)
     {
-      MudDialog?.Close(DialogResult.Ok(vehiclepreview.DepartureTime.Value));
+      MudDialog?.Close(DialogResult.Ok(vehiclepreview.DepartureTime));
     }
   }
 }
