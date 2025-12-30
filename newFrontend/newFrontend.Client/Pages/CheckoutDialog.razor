@@ -22,11 +22,11 @@
             <MudPaper Class="pa-3"><b>Placa:</b> @vehiclepreview.Placa</MudPaper>
 
             <MudPaper Class="pa-3">
-              <b>Horário de Entrada:</b> @vehiclepreview.EntryTime.ToString("HH:mm:ss")
+              <b>Entrada:</b> @vehiclepreview.EntryTime.ToString("g")
             </MudPaper>
 
             <MudPaper Class="pa-3">
-              <b>Horário de saída:</b> @vehiclepreview.DepartureTime?.ToString("HH:mm:ss")
+              <b>Saída:</b> @vehiclepreview.DepartureTime?.ToString("g")
             </MudPaper>
           </MudStack>
         </MudItem>
