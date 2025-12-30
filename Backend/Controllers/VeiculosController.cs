@@ -79,20 +79,7 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
     }
   }
 
-  [HttpDelete("{id}")]
-  public async Task<IActionResult> Delete(int id)
-  {
-    var veiculoBanco = await _context.Veiculos.FindAsync(id);
-    if (veiculoBanco == null)
-      return NotFound("Veiculo não encontrado no banco de dados");
-
-    _context.Veiculos.Remove(veiculoBanco);
-    await _context.SaveChangesAsync();
-
-    return NoContent();
-  }
-
-  [HttpDelete("batchDelete")]
+  [HttpDelete("Delete")]
   public async Task<IActionResult> DeleteVehiclesInBatch([FromQuery] string ids)
   {
     // Mantaining split and parse here only for test. Implementing a DTO soon.
@@ -110,7 +97,7 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
                                          .ToListAsync();
 
       if (vehiclesToDelete.Count == 0)
-        return NotFound("Os veículos não encontrados no banco de dados.");
+        return NotFound("Os veículos não foram encontrados no banco de dados.");
 
       _context.Veiculos.RemoveRange(vehiclesToDelete);
       await _context.SaveChangesAsync();
