@@ -27,4 +27,17 @@ public class ParkingService(HttpClient http) : IParkingService
   {
     return await _http.PatchAsJsonAsync($"api/veiculos/{id}", date);
   }
+
+  public async Task<HttpResponseMessage> DeleteVehiclesFromHistory(string url)
+  {
+    return await _http.DeleteAsync($"api/veiculos/Delete{url}");
+  }
+
+  public string TranslateIdsToString(HashSet<Veiculo> selectedVehicles)
+  {
+    var stringIdsCollection = selectedVehicles.Select(v => v.Id.ToString()).ToHashSet();
+    var stringIds = string.Join("%2C", stringIdsCollection);
+
+    return stringIds;
+  }
 }

@@ -19,7 +19,8 @@
   <MudSpacer />
 
   <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Medium"
-    DropShadow="false">Excluir do Histórico</MudButton>
+    DropShadow="false" Disabled="@(selectedItems.Count == 0)" OnClick="@(()=> DeleteVehicles(selectedItems))">Excluir do
+    Histórico</MudButton>
 
   <MudSpacer />
 

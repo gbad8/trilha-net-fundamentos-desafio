@@ -1,0 +1,17 @@
+@using newFrontend.Client.Models
+@using newFrontend.Client.Pages
+
+<MudDialog>
+  <DialogContent>
+    <MudContainer>
+      <MudText Typo="Typo.subtitle1">Deseja realmente excluir os veículos selecionados?</MudText>
+      <br />
+      <MudText Typo="Typo.subtitle1">Após a confirmação, os veículos selecionados serão excluídos permanentemente do
+        histórico.</MudText>
+    </MudContainer>
+  </DialogContent>
+  <DialogActions>
+    <MudButton OnClick="Cancel">Cancelar</MudButton>
+    <MudButton Color="Color.Error" Variant="Variant.Filled" OnClick="Confirm">Excluir</MudButton>
+  </DialogActions>
+</MudDialog>

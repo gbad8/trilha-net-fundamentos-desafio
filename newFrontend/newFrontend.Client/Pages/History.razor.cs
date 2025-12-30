@@ -1,6 +1,7 @@
 namespace newFrontend.Client.Pages;
 
 using newFrontend.Client.Models;
+using MudBlazor;
 
 public partial class History
 {
@@ -42,5 +43,30 @@ public partial class History
     if (veiculo.Placa.Contains(searchString, StringComparison.OrdinalIgnoreCase))
       return true;
     return false;
+  }
+
+  private async Task DeleteVehicles(HashSet<Veiculo> itens)
+  {
+    var dialogReference = await DialogService.ShowAsync<ExclusionConfirmationDialog>("Confirmação de Exclusão");
+    var result = await dialogReference.Result;
+
+    if (result is not null)
+    {
+      if (!result.Canceled)
+      {
+        string stringIds = ParkingService.TranslateIdsToString(itens);
+        string uri = string.Concat("?", "ids=", stringIds);
+        var response = await ParkingService.DeleteVehiclesFromHistory(uri);
+
+        if (response.IsSuccessStatusCode)
+        {
+          Snackbar.Add($"Veículo(s) excluídos com sucesso.", Severity.Success);
+        }
+        else
+        {
+          Snackbar.Add(response.RequestMessage!.ToString(), Severity.Error);
+        }
+      }
+    }
   }
 }
