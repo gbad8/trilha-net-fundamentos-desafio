@@ -10,17 +10,20 @@
 </MudText>
 <br />
 
-<MudContainer MaxWidth="MaxWidth.Medium">
-  <MudStack Spacing="4">
-    <MudPaper Class="pa-4">
+<MudGrid Spacing="8">
+  <MudItem md="6" sm="12" xs="12">
+    <MudPaper Class="pa-8" Height="100%">
       <MudText Typo="Typo.h5" GutterBottom="true">
         <MudIcon Icon="@Icons.Material.Filled.School" Class="mr-2" />
         Origem: Bootcamp DIO
       </MudText>
       <MudText Typo="Typo.body1" Align="Align.Justify">
         Este projeto foi desenvolvido como solução para o desafio de projeto do Bootcamp da <MudLink
-          Href="https://tivit.com/" Underline="Underline.Always" Target="_blank"><strong>TIVIT</strong></MudLink> com a
-        <MudLink Href="https://www.dio.me/" Underline="Underline.Always" Target="_blank"><strong>DIO (Digital Innovation
+          Href="https://tivit.com/" Underline="Underline.Always" Target="_blank"><strong>TIVIT</strong></MudLink>
+        com
+        a
+        <MudLink Href="https://www.dio.me/" Underline="Underline.Always" Target="_blank"><strong>DIO (Digital
+            Innovation
             One).</strong></MudLink>
         A <MudLink Href="https://github.com/digitalinnovationone/trilha-net-fundamentos-desafio" Target="_blank">
           <strong>
@@ -40,23 +43,31 @@
         <MudHighlighter Text="(veiculos)" HighlightedText="(veiculos)" Class="mud-primary-text"
           Style="background-color:transparent;font-weight:bold" />
         para armazenar apenas as placas.
+      </MudText>
 
-        <MudSpacer />
+      <br />
 
-        A lógica de negócio exigia a criação de um menu interativo com métodos para Cadastrar e Listar os veículos, além
-        de uma função de Remover que, ao dar saída no veículo, solicitasse as horas de permanência e calculasse o valor
+      <MudText Typo="Typo.body1" Align="Align.Justify">
+        A lógica de negócio exigia a criação de um menu interativo com métodos para Cadastrar e Listar os veículos,
+        além
+        de uma função de Remover que, ao dar saída no veículo, solicitasse as horas de permanência e calculasse o
+        valor
         total a ser cobrado.
       </MudText>
     </MudPaper>
+  </MudItem>
 
-    <MudPaper Class="pa-4">
+  <MudItem md="6" sm="12" xs="12">
+    <MudPaper Class="pa-8" Height="100%">
       <MudText Typo="Typo.h5" GutterBottom="true">
         <MudIcon Icon="@Icons.Material.Filled.Web" Class="mr-2" />
         Evolução para Web
       </MudText>
       <MudText Typo="Typo.body1" Align="Align.Justify">
         Após concluir a implementação básica em console, que se encontra disponível em uma outra branch deste
-        repositório, decidi utilizar este cenário para aplicar outros conhecimentos adquiridos ao longo do bootcamp e em
+        repositório, decidi utilizar este cenário para aplicar outros conhecimentos adquiridos ao longo do bootcamp
+        e
+        em
         estudos paralelos. As principais mudanças implementadas incluem:
       </MudText>
       <MudList T="string" Dense="true" ReadOnly="true">
@@ -86,8 +97,10 @@
         </MudListItem>
       </MudList>
     </MudPaper>
+  </MudItem>
 
-    <MudPaper Class="pa-4">
+  <MudItem md="6" sm="12" xs="12">
+    <MudPaper Class="pa-8">
       <MudText Typo="Typo.h5" GutterBottom="true">
         <MudIcon Icon="@Icons.Material.Filled.Map" Class="mr-2" />
         Roadmap de Evolução
@@ -143,7 +156,8 @@
             <MudPaper Elevation="0" Class="mt-n1">
               <MudText Color="Color.Tertiary" Typo="Typo.h6" GutterBottom="true">Deploy na Nuvem</MudText>
               <MudText Typo="Typo.body2">
-                Publicação produtiva no <strong>Azure App Service</strong> e banco de dados <strong>Azure SQL</strong>.
+                Publicação produtiva no <strong>Azure App Service</strong> e banco de dados <strong>Azure
+                  SQL</strong>.
               </MudText>
             </MudPaper>
           </ItemContent>
@@ -151,5 +165,5 @@
 
       </MudTimeline>
     </MudPaper>
-  </MudStack>
-</MudContainer>
+  </MudItem>
+</MudGrid>
