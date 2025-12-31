@@ -65,10 +65,11 @@
       </MudText>
       <MudText Typo="Typo.body1" Align="Align.Justify">
         Após concluir a implementação básica em console, que se encontra disponível em uma outra branch deste
-        repositório, decidi utilizar este cenário para aplicar outros conhecimentos adquiridos ao longo do bootcamp
-        e
-        em
-        estudos paralelos. As principais mudanças implementadas incluem:
+        repositório,
+        <MudHighlighter Text="decidi implementar uma versão web do projeto"
+          HighlightedText="decidi implementar uma versão web do projeto" Class="mud-primary-text"
+          Style="background-color:transparent;font-weight:bold" /> afim de aplicar os conhecimentos adquiridos ao longo
+        do bootcamp e em estudos paralelos. As principais mudanças implementadas incluem:
       </MudText>
       <MudList T="string" Dense="true" ReadOnly="true">
         <MudListItem Icon="@Icons.Material.Filled.CheckBox" IconColor="Color.Primary">
@@ -100,10 +101,10 @@
   </MudItem>
 
   <MudItem md="6" sm="12" xs="12">
-    <MudPaper Class="pa-8">
+    <MudPaper Class="pa-8" Height="100%">
       <MudText Typo="Typo.h5" GutterBottom="true">
         <MudIcon Icon="@Icons.Material.Filled.Map" Class="mr-2" />
-        Roadmap de Evolução
+        Próximos Passos
       </MudText>
 
       <MudText Typo="Typo.body1" Class="mb-4">
@@ -164,6 +165,73 @@
         </MudTimelineItem>
 
       </MudTimeline>
+    </MudPaper>
+  </MudItem>
+
+  <MudItem md="6" sm="12" xs="12">
+    <MudPaper Class="pa-8" Height="100%">
+      <MudText Typo="Typo.h5" GutterBottom="true">
+        <MudAvatar Class="mr-2">
+          <MudImage Src="https://avatars.githubusercontent.com/u/22562300?v=4" Alt="Foto de perfil do Guilherme">
+          </MudImage>
+        </MudAvatar>
+        Sobre o desenvolvedor
+      </MudText>
+
+      <MudText Typo="Typo.body1" Align="Align.Justify">
+        <MudHighlighter Text="O que acontece quando um Técnico Legislativo aprende a codar?"
+          HighlightedText="O que acontece quando um Técnico Legislativo aprende a codar?" Class="mud-primary-text"
+          Style="background-color:transparent;font-weight:bold" /> Nasce um desenvolvedor que
+        entende a dor do usuário final!
+      </MudText>
+
+      <br />
+
+      <MudText Typo="Typo.body1" Align="Align.Justify">
+        No último ano, como funcionário da Câmara Municipal de Vila Nova dos Martírios/MA,
+        <MudHighlighter Text="identifiquei gargalos
+        críticos" HighlightedText="identifiquei gargalos
+        críticos" Class="mud-primary-text" Style="background-color:transparent;font-weight:bold" /> no
+        trâmite legislativo. Diante do desafio,
+        <MudHighlighter Text="idealizei e desenvolvi um sistema de gestão utilizando
+        ASP.NET e Blazor" HighlightedText="idealizei e desenvolvi um sistema de gestão utilizando
+        ASP.NET e Blazor" Class="mud-primary-text" Style="background-color:transparent;font-weight:bold" />, que hoje
+        auxilia vereadores e a secretaria na redação e controle de documentos oficiais.
+      </MudText>
+
+      <br />
+
+      <MudText Typo="Typo.body1" Align="Align.Justify">
+        Essa experiência foi simplesmente decisiva para mim. Ao construir soluções em .NET,
+        <MudHighlighter Text="entendi que meu lugar
+        realmente é no desenvolvimento de software" HighlightedText="entendi que meu lugar
+        realmente é no desenvolvimento de software" Class="mud-primary-text"
+          Style="background-color:transparent;font-weight:bold" />. Hoje eu busco minha primeira oportunidade
+        profissional
+        como Desenvolvedor Backend, trazendo a disciplina e o olhar analítico da minha experiência anterior para somar
+        aos desafios técnicos.
+      </MudText>
+
+      <br />
+
+      <MudText Typo="Typo.body1" Align="Align.Justify">
+        <MudHighlighter Text="Onde me encontrar:" HighlightedText="Onde me encontrar:" Class="mud-primary-text"
+          Style="background-color:transparent;font-weight:bold" />
+      </MudText>
+
+      <br />
+
+      <MudStack Spacing="4" Row="true" Justify="Justify.Center">
+        <MudButton Href="https://github.com/gbad8" Target="_blank" Variant="Variant.Filled" Color="Color.Primary"
+          StartIcon="@Icons.Custom.Brands.GitHub">GitHub</MudButton>
+
+        <MudButton Href="https://www.linkedin.com/in/guilherme-d-almeida-48a51613b/" Target="_blank"
+          Variant="Variant.Filled" Color="Color.Info" StartIcon="@Icons.Custom.Brands.LinkedIn">Conectar</MudButton>
+
+        <MudButton Href="https://discord.com/users/485500128900153344" Target="_blank" Variant="Variant.Filled"
+          Color="Color.Secondary" StartIcon="@Icons.Custom.Brands.Discord">Discord</MudButton>
+      </MudStack>
+
     </MudPaper>
   </MudItem>
 </MudGrid>
