@@ -1,0 +1,155 @@
+@page "/about"
+
+<PageTitle>Sobre - T&D</PageTitle>
+
+<br />
+<MudText Typo="Typo.h4" GutterBottom="true">Sobre o projeto</MudText>
+
+<MudText Typo="Typo.subtitle1">Nesta página, você encontrará informações sobre o projeto, sobre sua origem e sobre os
+  próximos passos.
+</MudText>
+<br />
+
+<MudContainer MaxWidth="MaxWidth.Medium">
+  <MudStack Spacing="4">
+    <MudPaper Class="pa-4">
+      <MudText Typo="Typo.h5" GutterBottom="true">
+        <MudIcon Icon="@Icons.Material.Filled.School" Class="mr-2" />
+        Origem: Bootcamp DIO
+      </MudText>
+      <MudText Typo="Typo.body1" Align="Align.Justify">
+        Este projeto foi desenvolvido como solução para o desafio de projeto do Bootcamp da <MudLink
+          Href="https://tivit.com/" Underline="Underline.Always" Target="_blank"><strong>TIVIT</strong></MudLink> com a
+        <MudLink Href="https://www.dio.me/" Underline="Underline.Always" Target="_blank"><strong>DIO (Digital Innovation
+            One).</strong></MudLink>
+        A <MudLink Href="https://github.com/digitalinnovationone/trilha-net-fundamentos-desafio" Target="_blank">
+          <strong>
+            proposta original</strong>
+        </MudLink> era a construção de uma aplicação Console em C# para gerenciar um
+        estacionamento. O núcleo do desafio era a implementação da classe
+        <MudHighlighter Text="Estacionamento" HighlightedText="Estacionamento" Class="mud-primary-text"
+          Style="background-color:transparent;font-weight:bold" />, estruturada com três
+        variáveis
+        fundamentais:
+        <MudHighlighter Text="precoInicial" HighlightedText="preciInicial" Class="mud-primary-text"
+          Style="background-color:transparent;font-weight:bold" />
+        ,
+        <MudHighlighter Text="precoPorHora" HighlightedText="precoPorHora" Class="mud-primary-text"
+          Style="background-color:transparent;font-weight:bold" />
+        e uma lista de strings
+        <MudHighlighter Text="(veiculos)" HighlightedText="(veiculos)" Class="mud-primary-text"
+          Style="background-color:transparent;font-weight:bold" />
+        para armazenar apenas as placas.
+
+        <MudSpacer />
+
+        A lógica de negócio exigia a criação de um menu interativo com métodos para Cadastrar e Listar os veículos, além
+        de uma função de Remover que, ao dar saída no veículo, solicitasse as horas de permanência e calculasse o valor
+        total a ser cobrado.
+      </MudText>
+    </MudPaper>
+
+    <MudPaper Class="pa-4">
+      <MudText Typo="Typo.h5" GutterBottom="true">
+        <MudIcon Icon="@Icons.Material.Filled.Web" Class="mr-2" />
+        Evolução para Web
+      </MudText>
+      <MudText Typo="Typo.body1" Align="Align.Justify">
+        Após concluir a implementação básica em console, que se encontra disponível em uma outra branch deste
+        repositório, decidi utilizar este cenário para aplicar outros conhecimentos adquiridos ao longo do bootcamp e em
+        estudos paralelos. As principais mudanças implementadas incluem:
+      </MudText>
+      <MudList T="string" Dense="true" ReadOnly="true">
+        <MudListItem Icon="@Icons.Material.Filled.CheckBox" IconColor="Color.Primary">
+          Migração da lógica de Console para uma
+          <MudHighlighter Text="API RESTful" HighlightedText="API RESTful" Class="mud-primary-text"
+            Style="background-color:transparent;font-weight:bold" />.
+        </MudListItem>
+        <MudListItem Icon="@Icons.Material.Filled.CheckBox" IconColor="Color.Primary">
+          Implementação de persistência de dados com
+          <MudHighlighter Text="Entity Framework" HighlightedText="Entity Framework" Class="mud-primary-text"
+            Style="background-color:transparent;font-weight:bold" />e
+          <MudHighlighter Text="SQL Server" HighlightedText="SQL Server" Class="mud-primary-text"
+            Style="background-color:transparent;font-weight:bold" />.
+        </MudListItem>
+        <MudListItem Icon="@Icons.Material.Filled.CheckBox" IconColor="Color.Primary">
+          Desenvolvimento de uma interface moderna e responsiva utilizando
+          <MudHighlighter Text="Blazor WebAssembly" HighlightedText="Blazor WebAssembly" Class="mud-primary-text"
+            Style="background-color:transparent;font-weight:bold" /> e
+          <MudHighlighter Text="MudBlazor" HighlightedText="MudBlazor" Class="mud-primary-text"
+            Style="background-color:transparent;font-weight:bold" />.
+        </MudListItem>
+        <MudListItem Icon="@Icons.Material.Filled.CheckBox" IconColor="Color.Primary">
+          Distribuição em múltiplos serviços orquestrados com
+          <MudHighlighter Text="Docker Compose" HighlightedText="Docker Compose" Class="mud-primary-text"
+            Style="background-color:transparent;font-weight:bold" />.
+        </MudListItem>
+      </MudList>
+    </MudPaper>
+
+    <MudPaper Class="pa-4">
+      <MudText Typo="Typo.h5" GutterBottom="true">
+        <MudIcon Icon="@Icons.Material.Filled.Map" Class="mr-2" />
+        Roadmap de Evolução
+      </MudText>
+
+      <MudText Typo="Typo.body1" Class="mb-4">
+        O projeto está em constante aprimoramento, acompanhando o meu progresso como desenvolvedor. Abaixo estão as
+        metas para as próximas versões:
+      </MudText>
+
+      <MudTimeline TimelinePosition="TimelinePosition.Start">
+
+        <MudTimelineItem Color="Color.Info" Elevation="25" Variant="Variant.Filled">
+          <ItemContent>
+            <MudPaper Elevation="0" Class="mt-n1">
+              <MudText Typo="Typo.h6" Color="Color.Info" GutterBottom="true"><strong>Arquitetura e DTOs</strong>
+              </MudText>
+              <MudText Typo="Typo.body2">
+                Refatoração dos endpoints para utilização de <strong>Data Transfer Objects (DTOs)</strong>,
+                padronizando requisições (ex: <em>Batch Delete</em> e <em>Checkout</em>).
+              </MudText>
+            </MudPaper>
+          </ItemContent>
+        </MudTimelineItem>
+
+        <MudTimelineItem Color="Color.Primary" Elevation="25" Variant="Variant.Filled">
+          <ItemContent>
+            <MudPaper Elevation="0" Class="mt-n1">
+              <MudText Typo="Typo.h6" Color="Color.Primary" GutterBottom="true"><strong>Testes e Validação</strong>
+              </MudText>
+              <MudText Typo="Typo.body2">
+                Implementação de <strong>Testes Unitários</strong> (xUnit) e validação de dados com
+                <strong>FluentValidation</strong>.
+              </MudText>
+            </MudPaper>
+          </ItemContent>
+        </MudTimelineItem>
+
+        <MudTimelineItem Color="Color.Secondary" Elevation="25" Variant="Variant.Filled">
+          <ItemContent>
+            <MudPaper Elevation="0" Class="mt-n1">
+              <MudText Typo="Typo.h6" Color="Color.Secondary" GutterBottom="true"><strong>Segurança e
+                  Autenticação</strong></MudText>
+              <MudText Typo="Typo.body2">
+                Proteção da API com <strong>JWT</strong> e sistema de Login (Identity).
+              </MudText>
+            </MudPaper>
+          </ItemContent>
+        </MudTimelineItem>
+
+        <MudTimelineItem Color="Color.Tertiary" Elevation="25" Variant="Variant.Filled">
+          <ItemContent>
+            <MudPaper Elevation="0" Class="mt-n1">
+              <MudText Color="Color.Tertiary" Typo="Typo.h6" GutterBottom="true">Deploy na Nuvem</MudText>
+              <MudText Typo="Typo.body2">
+                Publicação produtiva no <strong>Azure App Service</strong> e banco de dados <strong>Azure SQL</strong>.
+              </MudText>
+            </MudPaper>
+          </ItemContent>
+        </MudTimelineItem>
+
+      </MudTimeline>
+    </MudPaper>
+  </MudStack>
+</MudContainer>
