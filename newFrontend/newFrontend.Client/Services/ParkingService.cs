@@ -7,6 +7,11 @@ public class ParkingService(HttpClient http) : IParkingService
 {
   private readonly HttpClient _http = http;
 
+  public async Task<HttpResponseMessage> MakeCheckinAsync(Veiculo newVehicle)
+  {
+    return await _http.PostAsJsonAsync("api/veiculos", newVehicle);
+  }
+
   public async Task<List<Veiculo>> GetVeiculosAsync()
   {
     return await _http.GetFromJsonAsync<List<Veiculo>>("api/veiculos") ?? [];

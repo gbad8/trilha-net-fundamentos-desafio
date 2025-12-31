@@ -4,6 +4,8 @@ namespace newFrontend.Client.Services;
 
 public interface IParkingService
 {
+  Task<HttpResponseMessage> MakeCheckinAsync(Veiculo newVehicle);
+
   Task<List<Veiculo>> GetVeiculosAsync();
 
   Task<List<Veiculo>> GetHistoryAsync();

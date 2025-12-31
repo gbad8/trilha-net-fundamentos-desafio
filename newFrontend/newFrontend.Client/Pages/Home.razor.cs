@@ -44,11 +44,34 @@ public partial class Home
     return false;
   }
 
+  private async Task MakeCheckin()
+  {
+    var dialogReference = await DialogService.ShowAsync<CheckinDialog>("Realizar Check-in");
+    var result = await dialogReference.Result;
+
+    if (result is not null && !result.Canceled)
+    {
+      if (result.Data is Veiculo newVehicle)
+      {
+        var response = await ParkingService.MakeCheckinAsync(newVehicle);
+        if (response.IsSuccessStatusCode)
+        {
+          Snackbar.Add($"Check-in realizado com sucesso!", Severity.Success);
+          veiculos = await ParkingService.GetVeiculosAsync();
+        }
+        else
+        {
+          Snackbar.Add($"Erro ao realizar check-in", Severity.Error);
+        }
+      }
+    }
+  }
+
   private async Task MakeCheckout(Veiculo veiculo)
   {
     var parameters = new DialogParameters { ["VehicleId"] = veiculo.Id };
 
-    var dialogReference = await DialogService.ShowAsync<CheckoutDialog>("Realizar Checkout", parameters);
+    var dialogReference = await DialogService.ShowAsync<CheckoutDialog>("Realizar Check-out", parameters);
     var result = await dialogReference.Result;
 
     if (result is not null)
@@ -60,12 +83,12 @@ public partial class Home
           var response = await ParkingService.MakeCheckoutAsync(veiculo.Id, previewDate);
           if (response.IsSuccessStatusCode)
           {
-            Snackbar.Add($"Checkout de {veiculo.Placa} realizado!", Severity.Success);
+            Snackbar.Add($"Check-out de {veiculo.Placa} realizado!", Severity.Success);
             veiculos = await ParkingService.GetVeiculosAsync();
           }
           else
           {
-            Snackbar.Add("Erro ao realizar checkout.", Severity.Error);
+            Snackbar.Add("Erro ao realizar check-out.", Severity.Error);
           }
         }
       }

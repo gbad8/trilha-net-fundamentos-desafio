@@ -1,0 +1,34 @@
+@using newFrontend.Client.Models
+@using newFrontend.Client.Pages
+@using newFrontend.Client.Services
+@inject IParkingService ParkingService
+@inject HttpClient Http
+
+<MudDialog>
+  <DialogContent>
+    <MudText Typo="Typo.subtitle1">Insira abaixo os dados do veículo e em seguida clique em "Confirmar" para realizar o
+      Check-in.
+    </MudText>
+    <MudDivider Class="mb-3" />
+
+    <MudForm @ref="form" @bind-IsValid="@Success" @bind-Errors="@Errors">
+      <MudText Typo="Typo.subtitle2" Class="mb-2">Placa do Veículo</MudText>
+      <MudTextField T="string" Label="VehiclePlate" @bind-Value="VehiclePlate" Variant="Variant.Outlined"
+        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DirectionsCarFilled" Required="true"
+        RequiredError="É necessário inserir a placa do carro para prosseguir com o Check-in." />
+
+      <br />
+
+      <MudText Typo="Typo.subtitle2" Class="mb-2">Tipo de Veículo</MudText>
+      <MudRadioGroup @bind-Value="TypeOfTheVehicle">
+        <MudRadio Value="@(VehicleType.Car)" Color="Color.Primary">Carro</MudRadio>
+        <MudRadio Value="@(VehicleType.Motorcycle)" Color="Color.Secondary">Moto</MudRadio>
+      </MudRadioGroup>
+    </MudForm>
+  </DialogContent>
+  <DialogActions>
+    <MudButton OnClick="Cancel">Cancelar</MudButton>
+    <MudButton Color="Color.Success" Variant="Variant.Filled" Disabled="@(!Success)" OnClick="Confirm">
+      Confirmar</MudButton>
+  </DialogActions>
+</MudDialog>

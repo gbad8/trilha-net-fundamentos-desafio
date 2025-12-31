@@ -11,9 +11,20 @@
 <br />
 <MudText Typo="Typo.h4" GutterBottom="true">Visão Geral</MudText>
 
-<MudText Typo="Typo.subtitle1">Nesta página, você tem uma visão geral dos veículos estacionados no T&D Parking.
-  <br /> Clique no íconce da coluna "Ações" para realizar o checkout.
-</MudText>
+<MudStack Row="true" AlignItems="AlignItems.Center">
+  <MudText Typo="Typo.subtitle1">Nesta página, você tem uma visão geral dos veículos estacionados no T&D Parking.
+    <br /> Clique no íconce da coluna "Ações" para realizar o checkout.
+  </MudText>
+
+  <MudSpacer />
+
+  <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.DirectionsCarFilled" Color="Color.Primary"
+    Size="Size.Medium" DropShadow="false" OnClick="@(() => MakeCheckin())">Fazer Check-in</MudButton>
+
+  <MudSpacer />
+
+</MudStack>
+
 <br />
 
 <MudTable Items="@veiculos" FixedHeader="@fixed_header" FixedFooter="@fixed_footer"

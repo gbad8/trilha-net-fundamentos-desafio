@@ -64,7 +64,7 @@ public partial class History
         }
         else
         {
-          Snackbar.Add(response.RequestMessage!.ToString(), Severity.Error);
+          Snackbar.Add($"Erro ao excuir veículo.", Severity.Error);
         }
       }
     }
