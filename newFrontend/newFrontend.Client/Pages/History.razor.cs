@@ -5,12 +5,12 @@ using MudBlazor;
 
 public partial class History
 {
-  private List<Veiculo> veiculos = new();
+  private List<Veiculo> veiculos = [];
   private bool loading = true;
   private string searchString1 = "";
-  private HashSet<Veiculo> selectedItems = new HashSet<Veiculo>();
-  bool fixed_header = true;
-  bool fixed_footer = false;
+  private HashSet<Veiculo> selectedItems = [];
+  readonly bool fixed_header = true;
+  readonly bool fixed_footer = false;
 
   protected override async Task OnInitializedAsync()
   {
@@ -28,7 +28,7 @@ public partial class History
     }
   }
 
-  private string FormatType(VehicleType tipo)
+  private static string FormatType(VehicleType tipo)
   {
     if (tipo == VehicleType.Motorcycle)
       return "Moto";
@@ -36,7 +36,7 @@ public partial class History
     return "Carro";
   }
 
-  private bool FilterFunc(Veiculo veiculo, string searchString)
+  private static bool FilterFunc(Veiculo veiculo, string searchString)
   {
     if (string.IsNullOrWhiteSpace(searchString))
       return true;

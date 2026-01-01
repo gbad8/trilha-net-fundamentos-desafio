@@ -1,6 +1,5 @@
 namespace newFrontend.Client.Pages;
 
-using newFrontend.Client.Models;
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
 

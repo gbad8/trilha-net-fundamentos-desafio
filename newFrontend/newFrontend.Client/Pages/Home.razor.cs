@@ -5,11 +5,11 @@ using newFrontend.Client.Models;
 
 public partial class Home
 {
-  private List<Veiculo> veiculos = new();
+  private List<Veiculo> veiculos = [];
   private bool loading = true;
   private string searchString1 = "";
-  bool fixed_header = true;
-  bool fixed_footer = false;
+  readonly bool fixed_header = true;
+  readonly bool fixed_footer = false;
 
   protected override async Task OnInitializedAsync()
   {
@@ -27,7 +27,7 @@ public partial class Home
     }
   }
 
-  private string FormatType(VehicleType tipo)
+  private static string FormatType(VehicleType tipo)
   {
     if (tipo == VehicleType.Motorcycle)
       return "Moto";
@@ -35,7 +35,7 @@ public partial class Home
     return "Carro";
   }
 
-  private bool FilterFunc(Veiculo veiculo, string searchString)
+  private static bool FilterFunc(Veiculo veiculo, string searchString)
   {
     if (string.IsNullOrWhiteSpace(searchString))
       return true;
