@@ -3,13 +3,8 @@ using trilha_net_fundamentos_desafio.Models;
 
 namespace trilha_net_fundamentos_desafio.Context;
 
-public class VeiculoContext : DbContext
+public class VeiculoContext(DbContextOptions<VeiculoContext> options) : DbContext(options)
 {
-  public VeiculoContext(DbContextOptions<VeiculoContext> options) : base(options)
-  {
-
-  }
-
   public DbSet<Veiculo> Veiculos { get; set; }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)

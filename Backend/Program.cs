@@ -6,14 +6,12 @@ using trilha_net_fundamentos_desafio.Services;
 [assembly: ApiController]
 var builder = WebApplication.CreateBuilder(args);
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
+                       ?? throw new InvalidOperationException("Connection string" + "'DefaultConnection' not found.");
+
 builder.Services.AddDbContext<VeiculoContext>(options =>
-    options.UseSqlServer(
-      builder.Configuration.GetConnectionString("DefaultConnection"),
-      sqlOptions => sqlOptions.EnableRetryOnFailure(
-        maxRetryCount: 5,
-        maxRetryDelay: TimeSpan.FromSeconds(10),
-        errorNumbersToAdd: null)
-      ));
+    options.UseSqlServer(connectionString));
+
 builder.Services.AddScoped<IParkingService, ParkingService>();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
