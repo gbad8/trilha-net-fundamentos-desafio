@@ -61,7 +61,7 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   }
 
   [HttpPatch("{id}")]
-  public async Task<IActionResult> Checkout(int id, [FromBody] DateTime checkotTime)
+  public async Task<ActionResult<Veiculo>> Checkout(int id, [FromBody] DateTime checkotTime)
   {
     var veiculoBanco = await _context.Veiculos.FindAsync(id);
     if (veiculoBanco == null)
@@ -71,7 +71,7 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
     {
       _service.CheckingOut(veiculoBanco, checkotTime);
       await _context.SaveChangesAsync();
-      return Ok(veiculoBanco);
+      return veiculoBanco;
     }
     catch (InvalidOperationException ex)
     {
