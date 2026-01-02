@@ -23,7 +23,7 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   }
 
   [HttpGet]
-  public async Task<IActionResult> GetParkedVehicles()
+  public async Task<ActionResult<IEnumerable<Veiculo>>> GetParkedVehicles()
   {
     var veiculos = await _context.Veiculos
                                  .Where(x => x.DepartureTime == null)
@@ -34,21 +34,21 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
       veiculo.TicketPrice = _service.CalculateTicketPrice(veiculo);
     }
 
-    return Ok(veiculos);
+    return veiculos;
   }
 
   [HttpGet("history")]
-  public async Task<IActionResult> SearchHistory()
+  public async Task<ActionResult<IEnumerable<Veiculo>>> SearchHistory()
   {
     var veiculos = await _context.Veiculos
                                  .Where(x => x.DepartureTime != null)
                                  .ToListAsync();
 
-    return Ok(veiculos);
+    return veiculos;
   }
 
   [HttpGet("{id}")]
-  public async Task<IActionResult> GetVehicleById(int id)
+  public async Task<ActionResult<Veiculo>> GetVehicleById(int id)
   {
     var veiculo = await _context.Veiculos.FindAsync(id);
     if (veiculo == null)
@@ -57,7 +57,7 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
     veiculo.DepartureTime = DateTime.Now;
     veiculo.TicketPrice = _service.CalculateTicketPrice(veiculo);
 
-    return Ok(veiculo);
+    return veiculo;
   }
 
   [HttpPatch("{id}")]
