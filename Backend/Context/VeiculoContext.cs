@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using trilha_net_fundamentos_desafio.Models;
+using Parking.Shared.Models;
 
 namespace trilha_net_fundamentos_desafio.Context;
 

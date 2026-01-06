@@ -1,6 +1,6 @@
 namespace newFrontend.Client.Pages;
 
-using newFrontend.Client.Models;
+using Parking.Shared.Models;
 using MudBlazor;
 
 public partial class History

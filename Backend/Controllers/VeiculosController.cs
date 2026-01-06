@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using trilha_net_fundamentos_desafio.Models;
+using Parking.Shared.Models;
 using trilha_net_fundamentos_desafio.Context;
 using Microsoft.EntityFrameworkCore;
 using trilha_net_fundamentos_desafio.Services;

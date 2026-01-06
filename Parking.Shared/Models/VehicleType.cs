@@ -1,4 +1,4 @@
-﻿namespace newFrontend.Client.Models;
+namespace Parking.Shared.Models;
 
 public enum VehicleType
 {

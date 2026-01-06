@@ -1,4 +1,4 @@
-﻿using newFrontend.Client.Models;
+﻿using Parking.Shared.Models;
 
 namespace newFrontend.Client.Services;
 

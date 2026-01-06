@@ -1,7 +1,7 @@
 ﻿namespace newFrontend.Client.Pages;
 
 using MudBlazor;
-using newFrontend.Client.Models;
+using Parking.Shared.Models;
 
 public partial class Home
 {
