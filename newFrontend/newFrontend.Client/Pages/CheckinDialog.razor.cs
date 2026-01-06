@@ -11,7 +11,17 @@ public partial class CheckinDialog
   MudForm? form;
   bool Success;
   string[] Errors = [];
-  string? VehiclePlate { get; set; }
+
+  private string? _plate;
+  string? VehiclePlate
+  {
+    get => _plate;
+    set
+    {
+      _plate = value?.ToUpper();
+    }
+  }
+
   VehicleType TypeOfTheVehicle { get; set; } = VehicleType.Car;
 
   private void Cancel() => MudDialog?.Cancel();
