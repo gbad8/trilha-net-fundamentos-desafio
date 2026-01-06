@@ -7,7 +7,7 @@ public class ParkingService(HttpClient http) : IParkingService
 {
   private readonly HttpClient _http = http;
 
-  public async Task<HttpResponseMessage> MakeCheckinAsync(Veiculo newVehicle)
+  public async Task<HttpResponseMessage> MakeCheckinAsync(VeiculoToCreate newVehicle)
   {
     return await _http.PostAsJsonAsync("api/veiculos", newVehicle);
   }

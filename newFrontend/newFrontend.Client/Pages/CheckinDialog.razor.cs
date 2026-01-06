@@ -22,14 +22,9 @@ public partial class CheckinDialog
 
     if (form.IsValid)
     {
-      // Em breve implementarei DTOs
-      Veiculo checkinData = new()
-      {
-        Placa = VehiclePlate!,
-        Type = TypeOfTheVehicle
-      };
+      VeiculoToCreate checkinVehicle = new(VehiclePlate!, TypeOfTheVehicle);
 
-      MudDialog!.Close(DialogResult.Ok(checkinData));
+      MudDialog!.Close(DialogResult.Ok(checkinVehicle));
     }
   }
 }

@@ -51,7 +51,7 @@ public partial class Home
 
     if (result is not null && !result.Canceled)
     {
-      if (result.Data is Veiculo newVehicle)
+      if (result.Data is VeiculoToCreate newVehicle)
       {
         var response = await ParkingService.MakeCheckinAsync(newVehicle);
         if (response.IsSuccessStatusCode)

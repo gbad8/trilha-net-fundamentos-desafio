@@ -3,6 +3,7 @@ using Parking.Shared.Models;
 using trilha_net_fundamentos_desafio.Context;
 using Microsoft.EntityFrameworkCore;
 using trilha_net_fundamentos_desafio.Services;
+using Mapster;
 
 namespace trilha_net_fundamentos_desafio.Controllers;
 
@@ -13,8 +14,10 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   private readonly IParkingService _service = service;
 
   [HttpPost]
-  public async Task<IActionResult> Checkin(Veiculo veiculo)
+  public async Task<IActionResult> Checkin(VeiculoToCreate newVeiculo)
   {
+    var veiculo = newVeiculo.Adapt<Veiculo>();
+
     _service.CheckingIn(veiculo);
     _context.Add(veiculo);
     await _context.SaveChangesAsync();
