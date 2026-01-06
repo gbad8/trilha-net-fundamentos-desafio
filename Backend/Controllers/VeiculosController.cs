@@ -80,28 +80,17 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
 
   }
 
-  [HttpDelete("Delete")]
-  public async Task<IActionResult> DeleteVehiclesInBatch(string ids)
+  [HttpPost("delete")]
+  public async Task<IActionResult> DeleteVehiclesInBatch(HashSet<VeiculoToDelete> veiculosToDelete)
   {
-    // Mantaining split and parse here only for test. Implementing a DTO soon.
-    if (string.IsNullOrWhiteSpace(ids))
-      return BadRequest("Nenhum id fornecido");
+    if (veiculosToDelete == null || veiculosToDelete.Count == 0)
+      return BadRequest("Nenhum carro selecionado");
 
     try
     {
-      var idList = ids.Split(',')
-                      .Select(id => int.Parse(id.Trim()))
-                      .ToList();
+      var idsToDelete = veiculosToDelete.Select(v => v.Id).ToList();
 
-      var vehiclesToDelete = await _context.Veiculos
-                                         .Where(v => idList.Contains(v.Id))
-                                         .ToListAsync();
-
-      if (vehiclesToDelete.Count == 0)
-        return NotFound("Os veículos não foram encontrados no banco de dados.");
-
-      _context.Veiculos.RemoveRange(vehiclesToDelete);
-      await _context.SaveChangesAsync();
+      await _context.Veiculos.Where(v => idsToDelete.Contains(v.Id)).ExecuteDeleteAsync();
       return NoContent();
     }
     catch (Exception ex)

@@ -2,6 +2,7 @@ namespace newFrontend.Client.Pages;
 
 using Parking.Shared.Models;
 using MudBlazor;
+using Mapster;
 
 public partial class History
 {
@@ -45,7 +46,7 @@ public partial class History
     return false;
   }
 
-  private async Task DeleteVehicles(HashSet<Veiculo> itens)
+  private async Task DeleteVehicles(HashSet<Veiculo> vehiclesToDelete)
   {
     var dialogReference = await DialogService.ShowAsync<ExclusionConfirmationDialog>("Confirmação de Exclusão");
     var result = await dialogReference.Result;
@@ -54,13 +55,14 @@ public partial class History
     {
       if (!result.Canceled)
       {
-        string stringIds = ParkingService.TranslateIdsToString(itens);
-        string uri = string.Concat("?", "ids=", stringIds);
-        var response = await ParkingService.DeleteVehiclesFromHistory(uri);
+        var vehiclesToDeleteDto = vehiclesToDelete.Adapt<HashSet<VeiculoToDelete>>();
+
+        var response = await ParkingService.DeleteVehiclesFromHistory(vehiclesToDeleteDto);
 
         if (response.IsSuccessStatusCode)
         {
           Snackbar.Add($"Veículo(s) excluídos com sucesso.", Severity.Success);
+          veiculos = await ParkingService.GetHistoryAsync();
         }
         else
         {

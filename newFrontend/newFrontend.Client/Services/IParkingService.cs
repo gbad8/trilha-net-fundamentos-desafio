@@ -14,7 +14,5 @@ public interface IParkingService
 
   Task<HttpResponseMessage> MakeCheckoutAsync(int id, DateTime date);
 
-  Task<HttpResponseMessage> DeleteVehiclesFromHistory(string id);
-
-  string TranslateIdsToString(HashSet<Veiculo> selectedVehicles);
+  Task<HttpResponseMessage> DeleteVehiclesFromHistory(HashSet<VeiculoToDelete> veiculosToDelete);
 }
