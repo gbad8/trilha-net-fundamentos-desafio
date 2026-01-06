@@ -13,7 +13,7 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   private readonly VeiculoContext _context = context;
   private readonly IParkingService _service = service;
 
-  [HttpPost]
+  [HttpPost("checkin")]
   public async Task<IActionResult> Checkin(VeiculoToCreate newVeiculo)
   {
     var veiculo = newVeiculo.Adapt<Veiculo>();
@@ -25,19 +25,22 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
     return CreatedAtAction(nameof(GetVehicleById), new { id = veiculo.Id }, veiculo);
   }
 
-  [HttpGet]
-  public async Task<ActionResult<IEnumerable<Veiculo>>> GetParkedVehicles()
+  [HttpGet("overview")]
+  public async Task<ActionResult<IEnumerable<VeiculoToRead>>> GetParkedVehicles()
   {
     var veiculos = await _context.Veiculos
                                  .Where(x => x.DepartureTime == null)
                                  .ToListAsync();
+
 
     foreach (Veiculo veiculo in veiculos)
     {
       veiculo.TicketPrice = _service.CalculateTicketPrice(veiculo);
     }
 
-    return veiculos;
+    var veiculosToRead = veiculos.Adapt<List<VeiculoToRead>>();
+
+    return veiculosToRead;
   }
 
   [HttpGet("history")]
@@ -50,7 +53,7 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
     return veiculos;
   }
 
-  [HttpGet("{id}")]
+  [HttpGet("checkout-preview/{id}")]
   public async Task<ActionResult<Veiculo>> GetVehicleById(int id)
   {
     var veiculo = await _context.Veiculos.FindAsync(id);
@@ -63,18 +66,19 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
     return veiculo;
   }
 
-  [HttpPatch("{id}")]
-  public async Task<ActionResult<Veiculo>> Checkout(int id, [FromBody] DateTime checkotTime)
+  [HttpPatch("checkout")]
+  public async Task<IActionResult> Checkout(VeiculoToUptade veiculotoCheckout)
   {
-    var veiculoBanco = await _context.Veiculos.FindAsync(id);
+    var veiculoBanco = await _context.Veiculos.FindAsync(veiculotoCheckout.Id);
+
     if (veiculoBanco == null)
       return NotFound();
 
     try
     {
-      _service.CheckingOut(veiculoBanco, checkotTime);
+      _service.CheckingOut(veiculoBanco, veiculotoCheckout.DepartureTime);
       await _context.SaveChangesAsync();
-      return veiculoBanco;
+      return NoContent();
     }
     catch (InvalidOperationException ex)
     {

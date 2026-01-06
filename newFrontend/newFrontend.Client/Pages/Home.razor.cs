@@ -2,6 +2,7 @@
 
 using MudBlazor;
 using Parking.Shared.Models;
+using Mapster;
 
 public partial class Home
 {
@@ -15,7 +16,8 @@ public partial class Home
   {
     try
     {
-      veiculos = await ParkingService.GetVeiculosAsync();
+      var veiculosToRead = await ParkingService.GetVeiculosAsync();
+      veiculos = veiculosToRead.Adapt<List<Veiculo>>();
     }
     catch (Exception ex)
     {
@@ -57,7 +59,8 @@ public partial class Home
         if (response.IsSuccessStatusCode)
         {
           Snackbar.Add($"Check-in realizado com sucesso!", Severity.Success);
-          veiculos = await ParkingService.GetVeiculosAsync();
+          var veiculosToRead = await ParkingService.GetVeiculosAsync();
+          veiculos = veiculosToRead.Adapt<List<Veiculo>>();
         }
         else
         {
@@ -80,11 +83,13 @@ public partial class Home
       {
         if (result.Data is DateTime previewDate)
         {
-          var response = await ParkingService.MakeCheckoutAsync(veiculo.Id, previewDate);
+          var veiculoToCheckout = veiculo.Adapt<VeiculoToUptade>();
+          var response = await ParkingService.MakeCheckoutAsync(veiculoToCheckout);
           if (response.IsSuccessStatusCode)
           {
             Snackbar.Add($"Check-out de {veiculo.Placa} realizado!", Severity.Success);
-            veiculos = await ParkingService.GetVeiculosAsync();
+            var veiculosToRead = await ParkingService.GetVeiculosAsync();
+            veiculos = veiculosToRead.Adapt<List<Veiculo>>();
           }
           else
           {
