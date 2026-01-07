@@ -13,8 +13,9 @@
 
     <MudForm @ref="form" @bind-IsValid="@Success" @bind-Errors="@Errors">
       <MudText Typo="Typo.subtitle2" Class="mb-2">Placa do Veículo</MudText>
-      <MudTextField T="string" Label="VehiclePlate" @bind-Value="VehiclePlate" Variant="Variant.Outlined"
-        Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.DirectionsCarFilled" Required="true"
+      <MudTextField T="string" Label="VehiclePlate" Immediate="true" @bind-Value="VehiclePlate"
+        Variant="Variant.Outlined" Adornment="Adornment.Start"
+        AdornmentIcon="@Icons.Material.Filled.DirectionsCarFilled" Required="true"
         RequiredError="É necessário inserir a placa do carro para prosseguir com o Check-in." />
 
       <br />
