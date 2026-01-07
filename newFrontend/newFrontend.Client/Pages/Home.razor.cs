@@ -83,6 +83,7 @@ public partial class Home
       {
         if (result.Data is DateTime previewDate)
         {
+          veiculo.DepartureTime = previewDate;
           var veiculoToCheckout = veiculo.Adapt<VeiculoToUptade>();
           var response = await ParkingService.MakeCheckoutAsync(veiculoToCheckout);
           if (response.IsSuccessStatusCode)
