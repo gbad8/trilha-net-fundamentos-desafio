@@ -14,7 +14,6 @@ builder.Services.AddDbContext<VeiculoContext>(options =>
 
 builder.Services.AddScoped<IParkingService, ParkingService>();
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
