@@ -5,4 +5,5 @@
     <OutputPath>/tmp/build/bin/$(MSBuildProjectName)/</OutputPath>
     <DefaultItemExcludes>$(DefaultItemExcludes);bin/**;obj/**</DefaultItemExcludes>
   </PropertyGroup>
+
 </Project>

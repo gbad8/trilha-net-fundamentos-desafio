@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 using trilha_net_fundamentos_desafio.Context;
 using trilha_net_fundamentos_desafio.Services;
 
@@ -14,7 +15,26 @@ builder.Services.AddDbContext<VeiculoContext>(options =>
 
 builder.Services.AddScoped<IParkingService, ParkingService>();
 builder.Services.AddControllers();
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApi(options =>
+    {
+      options.AddDocumentTransformer((document, _, _) =>
+          {
+            document.Info = new OpenApiInfo
+            {
+              Title = "T&D Parking Management API",
+              Version = "v1",
+              Description = "API for managing a parking system.",
+
+              Contact = new OpenApiContact
+              {
+                Name = "Guilherme d'Almeida",
+                Email = "guilhermebarros181@gmail.com",
+                Url = new Uri("https://github.com/gbad8")
+              }
+            };
+            return Task.CompletedTask;
+          });
+    });
 
 builder.Services.AddCors(options =>
 {
@@ -31,8 +51,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
-  app.UseSwagger();
-  app.UseSwaggerUI();
+  app.MapOpenApi();
 }
 
 // app.UseHttpsRedirection();
