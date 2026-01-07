@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi;
+using Scalar.AspNetCore;
 using trilha_net_fundamentos_desafio.Context;
 using trilha_net_fundamentos_desafio.Services;
 
@@ -49,9 +50,14 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseStaticFiles();
+
 if (app.Environment.IsDevelopment())
 {
   app.MapOpenApi();
+  app.MapScalarApiReference(options =>
+      options.WithTitle("T&D Parking API")
+             .WithFavicon("/favicon.svg"));
 }
 
 // app.UseHttpsRedirection();
