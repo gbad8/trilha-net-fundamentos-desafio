@@ -1,0 +1,531 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "T&D Parking Management API",
+    "description": "API for managing a parking system. Developed as a solution for the first project challange on the TIVIT Bootcamp with DIO.",
+    "contact": {
+      "name": "Guilherme d'Almeida",
+      "url": "https://github.com/gbad8",
+      "email": "guilhermebarros181@gmail.com"
+    },
+    "version": "v1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000/"
+    }
+  ],
+  "paths": {
+    "/api/Veiculos/checkin": {
+      "post": {
+        "tags": [
+          "Make Check-in"
+        ],
+        "summary": "Check-in for the vehicles",
+        "description": "This endpoint creates new vehicles in the database. The main page of the application has a button that calls a popup where the user can input the information for the new vehicle.",
+        "operationId": "MakeCheckin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VeiculoToCreate"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VeiculoToCreate"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VeiculoToCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/Veiculo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Veiculo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Veiculo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Veiculos/overview": {
+      "get": {
+        "tags": [
+          "Parked Vehicles"
+        ],
+        "summary": "Lists parked vehicles",
+        "description": "This endpoint returns a list containing all the parked vehicles. The main page sends a request to this endppoint on initialization and populates a table with the vehicles data.",
+        "operationId": "GetVeiculos",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VeiculoToRead"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VeiculoToRead"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VeiculoToRead"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Veiculos/history": {
+      "get": {
+        "tags": [
+          "History of Parked Vehicles"
+        ],
+        "summary": "Lists all vehicles that used the parking service in the past",
+        "description": "This endpoint returns a list containing all the vehicles that someday used the parking service. The history page sends a request to this endppoint on initialization and populates a table with the vehicles data.",
+        "operationId": "GetHistory",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Veiculo"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Veiculo"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Veiculo"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Veiculos/checkout-preview/{id}": {
+      "get": {
+        "tags": [
+          "Make Check-out"
+        ],
+        "summary": "Gets the data for confirmation at checkout",
+        "description": "This endpoints returns data for a single vehicle selected on the main page for checkout. The purpose is to give the operator all the useful information for charging the vehicle's owner.",
+        "operationId": "CheckoutPreview",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^-?(?:0|[1-9]\\d*)$",
+              "type": [
+                "integer",
+                "string"
+              ],
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Requested vehicle was not found in the parking.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Veiculos/checkout": {
+      "patch": {
+        "tags": [
+          "Make Check-out"
+        ],
+        "summary": "Check-out for the vehicles",
+        "description": "After confirming the vehicle's data, the operator clicks the confirmation button, that sends a request to this endpoint with the vehicle for checkout",
+        "operationId": "MakeCheckout",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VeiculoToUptade"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VeiculoToUptade"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VeiculoToUptade"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Requested vehicle was not found in the parking.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Veiculos/delete": {
+      "post": {
+        "tags": [
+          "History of Parked Vehicles"
+        ],
+        "summary": "Deletes a vehicle from the database",
+        "description": "On the history page, the user can select many vehicles he wants and click the deletion button. This button sends a request to this endpoint with the vehicles for exclusion.",
+        "operationId": "DeleteVehiclesFromHistory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/VeiculoToDelete"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/VeiculoToDelete"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/VeiculoToDelete"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "No vehicle selected.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "title": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "status": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "null",
+              "integer",
+              "string"
+            ],
+            "format": "int32"
+          },
+          "detail": {
+            "type": [
+              "null",
+              "string"
+            ]
+          },
+          "instance": {
+            "type": [
+              "null",
+              "string"
+            ]
+          }
+        }
+      },
+      "VehicleType": {
+        "enum": [
+          "Car",
+          "Motorcycle"
+        ],
+        "description": "This enum contains the two possible types of vehicles in the parking"
+      },
+      "Veiculo": {
+        "required": [
+          "placa",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "That's the primary key created by SQL Server. The primary utility of this property \nis to identify the vehicle's selected by the user for marking check-out and deleting\nfrom the database.",
+            "format": "int32"
+          },
+          "placa": {
+            "type": "string",
+            "description": "The Vehicle plate is the most important identifyer, but it's utility is simply visual.\nThe user can identify and search cars based on this identification.`"
+          },
+          "type": {
+            "description": "The Vehicle type identifies whether the vehicle isa car or a motorcycle.",
+            "$ref": "#/components/schemas/VehicleType"
+          },
+          "entryTime": {
+            "type": "string",
+            "description": "This property marks the time the vehicle enters the parking and together with\nthe DepartureTime, serves to calculate the vehicle`s permanency.",
+            "format": "date-time"
+          },
+          "departureTime": {
+            "type": [
+              "null",
+              "string"
+            ],
+            "description": "Together with the EntryTime, is calculated by a service called by the endppoint.",
+            "format": "date-time"
+          },
+          "ticketPrice": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+            "type": [
+              "null",
+              "number",
+              "string"
+            ],
+            "description": "The value the vehicle`s owner must pay for the permanency. Also calculated by a sercice called from the endpoint.",
+            "format": "double"
+          }
+        },
+        "description": "That's the main model of the application.\nThere is a lot of information\nsomeone can get with paid apis, like color of the vehicle, year of fabrications, etc.\nHowever, here we have an abstraction containing only the necessary properties."
+      },
+      "VeiculoToCreate": {
+        "required": [
+          "placa",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "placa": {
+            "type": "string",
+            "description": "User input for the new vehicle's plate."
+          },
+          "type": {
+            "description": "Type of the vehicle: 0 for cars, 1 for motorcycles.",
+            "$ref": "#/components/schemas/VehicleType"
+          }
+        },
+        "description": "DTO sended to the endpoint for the creating of a new vehicle."
+      },
+      "VeiculoToDelete": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "As the only necessary data to identify the original vehicle is the id, this \n            DTO has only this property.<br />\n            The history page has a table where the user can select how many vehicles he wants to delete from the database.",
+            "format": "int32"
+          }
+        },
+        "description": "DTO sended to the delete endpoint to delete the corresponding vehicle from the database."
+      },
+      "VeiculoToRead": {
+        "required": [
+          "id",
+          "placa",
+          "type",
+          "entryTime",
+          "ticketPrice"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "That's the primary key created automatically by the SQL Server.",
+            "format": "int32"
+          },
+          "placa": {
+            "type": "string",
+            "description": "User input for the new vehicle plate."
+          },
+          "type": {
+            "description": "Typee of the vehicle: 0 for Car, 1 for Motorcycles.",
+            "$ref": "#/components/schemas/VehicleType"
+          },
+          "entryTime": {
+            "type": "string",
+            "description": "The time the check-in is registered.<br />\n            It is calculated by a service called by the check-in endpoint.",
+            "format": "date-time"
+          },
+          "ticketPrice": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+            "type": [
+              "number",
+              "string"
+            ],
+            "description": "The estimated value, based on the entrytime.<br />\n            It is calculated by the same service called by the check-in endpoint.",
+            "format": "double"
+          }
+        },
+        "description": "DTO to get a list of parked vehicles."
+      },
+      "VeiculoToUptade": {
+        "required": [
+          "id",
+          "departureTime"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^-?(?:0|[1-9]\\d*)$",
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "The id of the vehicle clicked by the user on the main page.",
+            "format": "int32"
+          },
+          "departureTime": {
+            "type": "string",
+            "description": "The departure time is atributed by a service called on the check-out page.",
+            "format": "date-time"
+          }
+        },
+        "description": "DTO sended to the Patch endpoint to make the vehicle's checkout."
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Make Check-in"
+    },
+    {
+      "name": "Parked Vehicles"
+    },
+    {
+      "name": "History of Parked Vehicles"
+    },
+    {
+      "name": "Make Check-out"
+    }
+  ]
+}
