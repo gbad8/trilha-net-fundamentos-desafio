@@ -24,7 +24,7 @@ builder.Services.AddOpenApi(options =>
             {
               Title = "T&D Parking Management API",
               Version = "v1",
-              Description = "API for managing a parking system.",
+              Description = "API for managing a parking system. Developed as a solution for the first project challange on the TIVIT Bootcamp with DIO.",
 
               Contact = new OpenApiContact
               {
@@ -57,7 +57,8 @@ if (app.Environment.IsDevelopment())
   app.MapOpenApi();
   app.MapScalarApiReference(options =>
       options.WithTitle("T&D Parking API")
-             .WithFavicon("/favicon.svg"));
+             .WithFavicon("/favicon.svg")
+             .WithTheme(ScalarTheme.Purple));
 }
 
 // app.UseHttpsRedirection();
