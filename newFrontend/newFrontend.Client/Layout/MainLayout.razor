@@ -8,9 +8,12 @@
 <MudSnackbarProvider />
 <MudLayout>
   <MudAppBar Elevation="1">
-    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
-      OnClick="@((e) => DrawerToggle())" />
-    <MudText Typo="Typo.h5" Class="ml-3">T&D Parking</MudText>
+    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+      <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
+        OnClick="@((e) => DrawerToggle())" />
+      <MudImage Src=@(_isDarkMode ? "TandDLogoDark.png" : "TandDLogo.png") Alt="T&D logo" Class="rounded-lg"
+        ObjectFit="ObjectFit.Cover" Height="40" Width="200" />
+    </MudStack>
     <MudSpacer />
     <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit"
       Href="https://github.com/gbad8/trilha-net-fundamentos-desafio" Target="_blank" />
