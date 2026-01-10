@@ -1,11 +1,14 @@
 using Parking.Shared.Models;
 namespace trilha_net_fundamentos_desafio.Services;
 
-public class ParkingService : IParkingService
+public class ParkingService(TimeProvider timeProvider) : IParkingService
 {
+
+  private readonly TimeProvider _timeProvider = timeProvider;
+
   public void CheckingIn(Veiculo veiculo)
   {
-    veiculo.EntryTime = DateTime.Now;
+    veiculo.EntryTime = _timeProvider.GetLocalNow().DateTime;
     veiculo.DepartureTime = null;
     veiculo.TicketPrice = null;
   }

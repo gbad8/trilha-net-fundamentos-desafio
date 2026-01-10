@@ -14,6 +14,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<VeiculoContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<IParkingService, ParkingService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi(options =>
