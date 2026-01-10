@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Backend\trilha-net-fundamentos-desafio.csproj" />
-    <ProjectReference Include="..\..\Parking.Shared\Parking.Shared.csproj" />
+    <ProjectReference Include="..\..\src\Backend\trilha-net-fundamentos-desafio.csproj" />
+    <ProjectReference Include="..\..\src\Parking.Shared\Parking.Shared.csproj" />
   </ItemGroup>
 
 </Project>
