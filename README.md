@@ -45,11 +45,15 @@ O projeto agora opera com três serviços principais orquestrados:
 3.  **Frontend (Client):**
     * Feito com base na imagem oficial do .NET SDK 9.0 da Microsoft.
     * Aplicação Blazor WebAssembly que consome a API.
-    * Permite a visualização em tempo real dos veículos estacionados.
+    * Permite a visualização/interação em tempo real dos veículos estacionados.
 5. **Banco de dados**:
     * Feito com base na imagem oficial do SQL Server da Microsoft.
     * Integração feita com o Entity Framework.
     * Substitui o uso de memória local, fazendo persistir os dados dos veículos.
+
+## 📖 Consulte a Documentação da API
+   * Página estática da [documentação](https://gbad8.github.io/trilha-net-fundamentos-desafio/).
+   * Para testar os endpoints, execute a aplicação utilizando o passo a passo da sessão abaixo "Como Executar"
 
 ## ⚙️ Como Executar
 
@@ -70,5 +74,5 @@ A infraestrutura foi desenhada para ser executada via Docker, eliminando a neces
    docker compose up
    ```
 3. **Acesse as interfaces:**
-   * **Frontend (Aplicação):** http://localhost:5001
-   * **Backend (Swagger/Docs):** http://localhost:8000/swagger
+   * **Frontend (Aplicação):** [http://localhost:5001](http://localhost:5001)
+   * **Backend (Swagger/Docs):** [http://localhost:8000/swagger](http://localhost:8000/scalar/)
