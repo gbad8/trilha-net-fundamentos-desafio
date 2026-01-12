@@ -13,6 +13,28 @@ public class ParkingService(TimeProvider timeProvider) : IParkingService
     veiculo.TicketPrice = null;
   }
 
+  public decimal GetPriceByVehicleType(Veiculo veiculo)
+  {
+    return veiculo.Type switch
+    {
+      VehicleType.Car => 10.00m,
+      VehicleType.Motorcycle => 5.00m,
+      _ => throw new NotImplementedException("O tipo de veículo não foi definido ainda pelo sistema.")
+    };
+  }
+
+  public decimal CalculateTicketPrice(Veiculo veiculo)
+  {
+    DateTime departureTime = veiculo.DepartureTime ?? _timeProvider.GetLocalNow().DateTime;
+
+    decimal hourlyPrice = GetPriceByVehicleType(veiculo);
+
+    TimeSpan permanency = departureTime - veiculo.EntryTime;
+    decimal totalHours = Math.Ceiling((decimal)permanency.TotalHours);
+
+    return hourlyPrice * totalHours;
+  }
+
   public void CheckingOut(Veiculo veiculo, DateTime checkoutTime)
   {
     if (veiculo.DepartureTime != null)
@@ -20,18 +42,5 @@ public class ParkingService(TimeProvider timeProvider) : IParkingService
 
     veiculo.DepartureTime = checkoutTime;
     veiculo.TicketPrice = CalculateTicketPrice(veiculo);
-  }
-
-  public decimal CalculateTicketPrice(Veiculo veiculo)
-  {
-    DateTime departureTime = veiculo.DepartureTime ?? DateTime.Now;
-
-    decimal hourlyPrice = (veiculo.Type == VehicleType.Car) ?
-      10.00m : 5.00m;
-
-    TimeSpan permanency = departureTime - veiculo.EntryTime;
-    decimal totalHours = Math.Ceiling((decimal)permanency.TotalHours);
-
-    return hourlyPrice * totalHours;
   }
 }
