@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trilha_net_fundamentos_desafio.Context;
 
@@ -11,9 +12,11 @@ using trilha_net_fundamentos_desafio.Context;
 namespace trilha_net_fundamentos_desafio.Migrations
 {
     [DbContext(typeof(VeiculoContext))]
-    partial class VeiculoContextModelSnapshot : ModelSnapshot
+    [Migration("20260113181208_AddPricesTable")]
+    partial class AddPricesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,32 @@ namespace trilha_net_fundamentos_desafio.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("trilha_net_fundamentos_desafio.Models.Veiculo", b =>
+            modelBuilder.Entity("Parking.Shared.Models.Prices", b =>
+                {
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Hourlyprice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Type");
+
+                    b.ToTable("Prices");
+
+                    b.HasData(
+                        new
+                        {
+                            Type = 0,
+                            Hourlyprice = 10.00m
+                        },
+                        new
+                        {
+                            Type = 1,
+                            Hourlyprice = 5.00m
+                        });
+                });
+
+            modelBuilder.Entity("Parking.Shared.Models.Veiculo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,6 +60,9 @@ namespace trilha_net_fundamentos_desafio.Migrations
 
                     b.Property<DateTime?>("DepartureTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("EffectiveHourlyPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("EntryTime")
                         .HasColumnType("datetime2");
@@ -48,7 +79,20 @@ namespace trilha_net_fundamentos_desafio.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Type");
+
                     b.ToTable("Veiculos");
+                });
+
+            modelBuilder.Entity("Parking.Shared.Models.Veiculo", b =>
+                {
+                    b.HasOne("Parking.Shared.Models.Prices", "PricingPolicy")
+                        .WithMany()
+                        .HasForeignKey("Type")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PricingPolicy");
                 });
 #pragma warning restore 612, 618
         }

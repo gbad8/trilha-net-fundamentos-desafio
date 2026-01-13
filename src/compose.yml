@@ -1,20 +1,5 @@
 name: dev-environment
 services:
-  api:
-    image: mcr.microsoft.com/dotnet/sdk:10.0 
-    container_name: api-backend
-    volumes:
-      - ./:/app
-    working_dir: /app/Backend
-    ports:
-      - 8000:8080
-    command: dotnet run
-    networks:
-      - development
-    environment:
-      - TZ=America/Sao_Paulo
-      - DOTNET_RUNNING_IN_CONTAINER=true
-
   blazor:
     image: mcr.microsoft.com/dotnet/sdk:9.0
     container_name: blazor-frontend
@@ -29,6 +14,29 @@ services:
       - DOTNET_RUNNING_IN_CONTAINER=true
     networks:
      - development
+    depends_on:
+      api:
+        condition: service_started
+        restart: true
+ 
+  api:
+    image: mcr.microsoft.com/dotnet/sdk:10.0 
+    container_name: api-backend
+    volumes:
+      - ./:/app
+    working_dir: /app/Backend
+    ports:
+      - 8000:8080
+    command: dotnet run
+    networks:
+      - development
+    environment:
+      - TZ=America/Sao_Paulo
+      - DOTNET_RUNNING_IN_CONTAINER=true
+    depends_on:
+      db:
+        condition: service_started
+        restart: true
 
   db:
     image: mcr.microsoft.com/mssql/server:2022-latest
