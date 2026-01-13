@@ -38,9 +38,9 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   public async Task<ActionResult<IEnumerable<VeiculoToRead>>> GetParkedVehicles()
   {
     var veiculos = await _context.Veiculos
-                                 .Where(x => x.DepartureTime == null)
+                                 .Include(v => v.PricingPolicy)
+                                 .Where(v => v.DepartureTime == null)
                                  .ToListAsync();
-
 
     foreach (Veiculo veiculo in veiculos)
     {
@@ -60,7 +60,8 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   public async Task<ActionResult<IEnumerable<Veiculo>>> SearchHistory()
   {
     var veiculos = await _context.Veiculos
-                                 .Where(x => x.DepartureTime != null)
+                                 .Include(v => v.PricingPolicy)
+                                 .Where(v => v.DepartureTime != null)
                                  .ToListAsync();
 
     return veiculos;
@@ -74,7 +75,9 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   [HttpGet("checkout-preview/{id}")]
   public async Task<ActionResult<Veiculo>> GetVehicleById(int id)
   {
-    var veiculo = await _context.Veiculos.FindAsync(id);
+    var veiculo = await _context.Veiculos
+                                  .Include(v => v.PricingPolicy)
+                                  .SingleAsync(v => v.Id == id);
     if (veiculo == null)
       return NotFound();
 
@@ -92,7 +95,9 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   [HttpPatch("checkout")]
   public async Task<IActionResult> Checkout(VeiculoToUptade veiculotoCheckout)
   {
-    var veiculoBanco = await _context.Veiculos.FindAsync(veiculotoCheckout.Id);
+    var veiculoBanco = await _context.Veiculos
+                                  .Include(v => v.PricingPolicy)
+                                  .SingleAsync(v => v.Id == veiculotoCheckout.Id);
 
     if (veiculoBanco == null)
       return NotFound();
