@@ -19,7 +19,7 @@ public class VeiculoContext(DbContextOptions<VeiculoContext> options) : DbContex
         });
 
     modelBuilder.Entity<Prices>()
-      .Property(p => p.Hourlyprice).HasColumnType("decimal(18,2)");
+      .Property(p => p.HourlyPrice).HasColumnType("decimal(18,2)");
 
     modelBuilder.Entity<Veiculo>()
       .HasOne(v => v.PricingPolicy)
@@ -28,8 +28,8 @@ public class VeiculoContext(DbContextOptions<VeiculoContext> options) : DbContex
       .IsRequired();
 
     modelBuilder.Entity<Prices>().HasData(
-        new Prices { Type = VehicleType.Car, Hourlyprice = 10.00m },
-        new Prices { Type = VehicleType.Motorcycle, Hourlyprice = 5.00m }
+        new Prices { Type = VehicleType.Car, HourlyPrice = 10.00m },
+        new Prices { Type = VehicleType.Motorcycle, HourlyPrice = 5.00m }
         );
   }
 }

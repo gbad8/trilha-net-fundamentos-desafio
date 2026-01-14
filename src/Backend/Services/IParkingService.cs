@@ -8,4 +8,6 @@ public interface IParkingService
   void CheckingOut(Veiculo veiculo, DateTime date);
 
   public decimal CalculateTicketPrice(Veiculo veiculo);
+
+  public VehicleType GetVehicleType(int id);
 }

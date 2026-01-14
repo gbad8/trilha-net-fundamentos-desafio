@@ -18,5 +18,5 @@ public class Prices
   /// <summary>
   /// Thats the property that's going to changed from the user's interface.
   /// </summary>
-  public decimal Hourlyprice { get; set; }
+  public decimal HourlyPrice { get; set; }
 }

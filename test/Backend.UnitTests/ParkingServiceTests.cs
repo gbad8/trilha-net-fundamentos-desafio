@@ -44,11 +44,11 @@ public class ParkinsServiceTests
   [InlineData(3)]
   public void CalculateTicketPrice_DepartureTimeNotGiven_UsesTimeProvider(int hoursInThePark)
   {
-    var pricesTable = new Prices { Type = 0, Hourlyprice = 10.00m }; // a car
+    var pricesTable = new Prices { Type = 0, HourlyPrice = 10.00m }; // a car
     var mockVehicle = new Veiculo { Placa = "placa", Type = 0, PricingPolicy = pricesTable };
     mockVehicle.EntryTime = stubTimeProvider.GetLocalNow().DateTime;
     stubTimeProvider.Advance(TimeSpan.FromHours(hoursInThePark));
-    decimal expectedValue = mockVehicle.PricingPolicy.Hourlyprice * hoursInThePark;
+    decimal expectedValue = mockVehicle.PricingPolicy.HourlyPrice * hoursInThePark;
 
     mockVehicle.TicketPrice = service.CalculateTicketPrice(mockVehicle);
 
@@ -61,7 +61,7 @@ public class ParkinsServiceTests
   [InlineData("10/10/2025 12:10:00 PM", "30")] // 3 hours
   public void CalculateTicketPrice_DepartureTimeGiven_CalculatesTheValueCorrectly(string date, string value)
   {
-    var pricesTable = new Prices { Type = 0, Hourlyprice = 10.00m }; // a car
+    var pricesTable = new Prices { Type = 0, HourlyPrice = 10.00m }; // a car
     var mockVehicle = new Veiculo { Placa = "placa", Type = 0, PricingPolicy = pricesTable };
     mockVehicle.EntryTime = DateTime.Parse("10/10/2025 10:00:00 AM"); // enters ate 10 AM
     mockVehicle.DepartureTime = DateTime.Parse(date);
@@ -75,7 +75,7 @@ public class ParkinsServiceTests
   [Fact]
   public void CheckingOut_DepartureTimeNotNull_ThrowsException()
   {
-    var pricesTable = new Prices { Type = 0, Hourlyprice = 10.00m }; // a car
+    var pricesTable = new Prices { Type = 0, HourlyPrice = 10.00m }; // a car
     var mockVehicle = new Veiculo { Placa = "placa", Type = 0, PricingPolicy = pricesTable };
     mockVehicle.DepartureTime = DateTime.Parse("10/10/2025 10:00:00 AM"); // a ramdom time
     var stubDepartureTime = stubTimeProvider.GetLocalNow().DateTime;
@@ -90,7 +90,7 @@ public class ParkinsServiceTests
   [Fact]
   public void CheckingOut_Normalcenario_AtributesTheTicketPrice()
   {
-    var pricesTable = new Prices { Type = 0, Hourlyprice = 10.00m }; // a car
+    var pricesTable = new Prices { Type = 0, HourlyPrice = 10.00m }; // a car
     var mockVehicle = new Veiculo { Placa = "placa", Type = 0, PricingPolicy = pricesTable };
     var checkoutTime = DateTime.Parse("10/10/2025 10:00:00 AM"); // a ramdom time
 
@@ -102,7 +102,7 @@ public class ParkinsServiceTests
   [Fact]
   public void CheckingOut_Normalcenario_AtributesTheEffectlyHourlyPrice()
   {
-    var pricesTable = new Prices { Type = 0, Hourlyprice = 10.00m }; // a car
+    var pricesTable = new Prices { Type = 0, HourlyPrice = 10.00m }; // a car
     var mockVehicle = new Veiculo
     {
       Placa = "placa",
@@ -114,7 +114,7 @@ public class ParkinsServiceTests
 
     service.CheckingOut(mockVehicle, checkoutTime);
 
-    Assert.True(mockVehicle.EffectiveHourlyPrice is not null);
+    Assert.True(mockVehicle.EffectiveHourlyPrice == pricesTable.HourlyPrice);
   }
 
   [Theory]
@@ -123,12 +123,35 @@ public class ParkinsServiceTests
   [InlineData("10/10/2025 12:10:00 PM")] // 3 hours
   public void CheckingOut_DepartureTimeNull_UsesPassedDepartureTime(string passedDepartureTime)
   {
-    var pricesTable = new Prices { Type = 0, Hourlyprice = 10.00m }; // a car
+    var pricesTable = new Prices { Type = 0, HourlyPrice = 10.00m }; // a car
     var mockVehicle = new Veiculo { Placa = "placa", Type = 0, PricingPolicy = pricesTable };
     var departureTime = DateTime.Parse(passedDepartureTime);
 
     service.CheckingOut(mockVehicle, departureTime);
 
     Assert.Equal(departureTime, mockVehicle.DepartureTime);
+  }
+
+  [Theory]
+  [InlineData(0, 0)] // a car
+  [InlineData(1, 1)] // a motorcycle
+  public void GetVehicleType_GivenAId_ReturnsTheCorrectType(int idInput, int vehicleTypesInput)
+  {
+    int stubId = idInput;
+    VehicleType[] stubTypes = [VehicleType.Car, VehicleType.Motorcycle];
+    var mockType = service.GetVehicleType(stubId);
+
+    Assert.Equal(stubTypes[vehicleTypesInput], mockType);
+  }
+
+  [Theory]
+  [InlineData(2)]
+  [InlineData(3)]
+  [InlineData(4)]
+  public void GetVehicleType_IdDoesNotCorrespondToARegisteredVehicle_ThrowsException(int idInput)
+  {
+    int stubId = idInput;
+
+    Assert.Throws<ArgumentException>(() => service.GetVehicleType(stubId));
   }
 }

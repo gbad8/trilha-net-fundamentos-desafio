@@ -35,3 +35,10 @@ public record VeiculoToUptade(int Id, DateTime DepartureTime);
 /// DTO has only this property.<br/>
 /// The history page has a table where the user can select how many vehicles he wants to delete from the database.</param>
 public record VeiculoToDelete(int Id);
+
+/// <summary>
+/// The purpose of this DTO is to get or set the pricing policy (price per hour) for the vehicle type.
+/// The vehicle type is given by the id in the uri.
+/// </summary>
+/// <param name="HourlyPrice"> The only parameter this DTO has is the price of the vehicle.</param> 
+public record PriceToReadAndToSet(decimal HourlyPrice);

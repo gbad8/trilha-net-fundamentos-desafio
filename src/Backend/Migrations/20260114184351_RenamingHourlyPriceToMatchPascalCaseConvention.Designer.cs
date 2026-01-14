@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using trilha_net_fundamentos_desafio.Context;
 
@@ -11,9 +12,11 @@ using trilha_net_fundamentos_desafio.Context;
 namespace trilha_net_fundamentos_desafio.Migrations
 {
     [DbContext(typeof(VeiculoContext))]
-    partial class VeiculoContextModelSnapshot : ModelSnapshot
+    [Migration("20260114184351_RenamingHourlyPriceToMatchPascalCaseConvention")]
+    partial class RenamingHourlyPriceToMatchPascalCaseConvention
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
