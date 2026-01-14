@@ -1,0 +1,39 @@
+@page "/pricingpolicy"
+@using newFrontend.Client.Pages
+@using newFrontend.Client.Services
+@using Parking.Shared.Models
+@inject IDialogService DialogService
+@inject IParkingService ParkingService
+@inject ISnackbar Snackbar
+
+<PageTitle>Preços - T&D</PageTitle>
+
+<br />
+<MudText Typo="Typo.h4" GutterBottom="true">Visão Geral</MudText>
+
+<MudStack Row="true" AlignItems="AlignItems.Center">
+  <MudText Typo="Typo.subtitle1">Nesta página, você pode modificar a política de preços do estacionamento.
+    <br /> Para cada tipo de veículo cadastrado no sistema, há um valor que é cobrado por hora.
+  </MudText>
+
+  <MudSpacer />
+
+  <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.DirectionsCarFilled" Color="Color.Primary"
+    Size="Size.Medium" DropShadow="false">Salvar Modificações</MudButton>
+
+  <MudSpacer />
+
+</MudStack>
+
+<br />
+
+<MudSlider Size="Size.Medium" T="decimal" @bind-Value="value" ValueLabel="true" Step="0.5m" Variant="Variant.Filled"
+  Culture="@culture" ValueLabelFormat="C" Min="0" Max="50">
+  <b>Carros:</b> @value.ToString("C")/hora
+</MudSlider>
+
+
+<MudSlider Size="Size.Medium" T="decimal" @bind-Value="value" ValueLabel="true" Step="0.5m" Variant="Variant.Filled"
+  Culture="@culture" ValueLabelFormat="C" Min="0" Max="50">
+  <b>Motocicletas:</b> @value.ToString("C")/hora
+</MudSlider>
