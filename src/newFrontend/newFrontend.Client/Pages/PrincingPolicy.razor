@@ -2,14 +2,13 @@
 @using newFrontend.Client.Pages
 @using newFrontend.Client.Services
 @using Parking.Shared.Models
-@inject IDialogService DialogService
-@inject IParkingService ParkingService
+@inject IPricesService PricesService
 @inject ISnackbar Snackbar
 
 <PageTitle>Preços - T&D</PageTitle>
 
 <br />
-<MudText Typo="Typo.h4" GutterBottom="true">Visão Geral</MudText>
+<MudText Typo="Typo.h4" GutterBottom="true">Política de Preços</MudText>
 
 <MudStack Row="true" AlignItems="AlignItems.Center">
   <MudText Typo="Typo.subtitle1">Nesta página, você pode modificar a política de preços do estacionamento.
@@ -19,7 +18,9 @@
   <MudSpacer />
 
   <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.DirectionsCarFilled" Color="Color.Primary"
-    Size="Size.Medium" DropShadow="false">Salvar Modificações</MudButton>
+    Size="Size.Medium" DropShadow="false" Disabled="@(IsDisable())">
+    Salvar Modificações
+  </MudButton>
 
   <MudSpacer />
 
@@ -27,13 +28,21 @@
 
 <br />
 
-<MudSlider Size="Size.Medium" T="decimal" @bind-Value="value" ValueLabel="true" Step="0.5m" Variant="Variant.Filled"
-  Culture="@culture" ValueLabelFormat="C" Min="0" Max="50">
-  <b>Carros:</b> @value.ToString("C")/hora
-</MudSlider>
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4 pb-28">
+  <MudStack Spacing="4" Justify="Justify.Center">
+    <MudCard Class="rounded-lg pa-4" Outlined="true" Elevation="25">
+      <MudSlider Size="Size.Medium" T="decimal" @bind-Value="priceForCarUser" ValueLabel="true" Step="0.5m"
+        Variant="Variant.Filled" Culture="@culture" ValueLabelFormat="C" Min="0" Max="50">
+        <MudText Typo="Typo.h6"> <b>Carros:</b> @priceForCarUser.ToString("C")/hora</MudText>
+      </MudSlider>
+    </MudCard>
 
-
-<MudSlider Size="Size.Medium" T="decimal" @bind-Value="value" ValueLabel="true" Step="0.5m" Variant="Variant.Filled"
-  Culture="@culture" ValueLabelFormat="C" Min="0" Max="50">
-  <b>Motocicletas:</b> @value.ToString("C")/hora
-</MudSlider>
+    <MudCard Class="rounded-lg pa-4" Outlined="true" Elevation="25">
+      <MudSlider Size="Size.Medium" T="decimal" @bind-Value="priceForMotorcycleUser" ValueLabel="true" Step="0.5m"
+        Variant="Variant.Filled" Culture="@culture" ValueLabelFormat="C" Min="0" Max="50">
+        <MudText Typo="Typo.h6"><b>Motocicletas:</b> @priceForMotorcycleUser.ToString("C")/hora</MudText>
+      </MudSlider>
+    </MudCard>
+  </MudStack>
+  <MudSpacer />
+</MudContainer>
