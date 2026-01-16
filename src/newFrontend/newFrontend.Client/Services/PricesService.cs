@@ -13,8 +13,8 @@ public class PricesService(HttpClient http) : IPricesService
       ?? throw new InvalidOperationException("Nenhuma política de preços foi encontrada. Por favor, entre em contato com o administrator do sistema.");
   }
 
-  public async Task<HttpResponseMessage> SetPriceAsync(int id, PriceToReadAndToSet newPrice)
+  public async Task<HttpResponseMessage> SetPriceAsync(List<Prices> pricingPoliciesToChange)
   {
-    return await _http.PatchAsJsonAsync($"api/prices/{id}", newPrice);
+    return await _http.PatchAsJsonAsync($"api/prices", pricingPoliciesToChange);
   }
 }

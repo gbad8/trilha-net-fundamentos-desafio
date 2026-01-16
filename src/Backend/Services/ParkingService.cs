@@ -46,6 +46,5 @@ public class ParkingService(TimeProvider timeProvider) : IParkingService
       1 => VehicleType.Motorcycle,
       _ => throw new ArgumentException("Não existe nenhuma política de preços para o veículo informado.")
     };
-
   }
 }

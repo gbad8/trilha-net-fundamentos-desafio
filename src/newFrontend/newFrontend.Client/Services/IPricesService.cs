@@ -5,5 +5,5 @@ namespace newFrontend.Client.Services;
 public interface IPricesService
 {
   Task<List<Prices>> GetAllPricesAsync();
-  Task<HttpResponseMessage> SetPriceAsync(int id, PriceToReadAndToSet newPrice);
+  Task<HttpResponseMessage> SetPriceAsync(List<Prices> pricingPoliciesToChange);
 }

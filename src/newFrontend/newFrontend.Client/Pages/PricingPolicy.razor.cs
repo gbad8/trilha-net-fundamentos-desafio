@@ -1,6 +1,6 @@
 using System.Globalization;
-using System.Reflection.Metadata;
 using Parking.Shared.Models;
+using MudBlazor;
 
 namespace newFrontend.Client.Pages;
 
@@ -49,5 +49,22 @@ public partial class PrincingPolicy
       buttonDisabled = false;
 
     StateHasChanged();
+  }
+
+  private async Task PatchChangesAsync(List<Prices> prices)
+  {
+    if (prices.Count != 0)
+    {
+      var response = await PricesService.SetPriceAsync(prices);
+
+      if (response.IsSuccessStatusCode)
+      {
+        Snackbar.Add($"Valor alterado com sucesso!", Severity.Success);
+      }
+      else
+      {
+        Snackbar.Add($"Falha na alteração do preço", Severity.Error);
+      }
+    }
   }
 }

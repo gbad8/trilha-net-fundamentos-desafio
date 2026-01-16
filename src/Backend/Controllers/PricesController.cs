@@ -8,10 +8,9 @@ using trilha_net_fundamentos_desafio.Services;
 namespace trilha_net_fundamentos_desafio.Controllers;
 
 [Route("api/[controller]")]
-public class PricesController(VeiculoContext context, IParkingService service) : ControllerBase
+public class PricesController(VeiculoContext context) : ControllerBase
 {
   private readonly VeiculoContext _context = context;
-  private readonly IParkingService _service = service;
 
   [Tags("Pricing Policy")]
   [EndpointName("GetAllPricingPolicy")]
@@ -27,22 +26,22 @@ public class PricesController(VeiculoContext context, IParkingService service) :
   [EndpointName("SetPricingPolicy")]
   [EndpointSummary("Sets a new pricing policy")]
   [EndpointDescription("This endpoint updates the specified vehicle type with a new hourly price.")]
-  [HttpPatch("{id}")]
-  public async Task<IActionResult> ChangePrices(int id, PriceToReadAndToSet price)
+  [HttpPatch]
+  public async Task<IActionResult> ChangePrices(List<Prices> updatedPrices)
   {
-    var typeToChange = _service.GetVehicleType(id);
-    var pricingPolicyToChange = await _context.Prices.FindAsync(typeToChange);
-
-    if (pricingPolicyToChange is not null && price.HourlyPrice != 0)
+    try
     {
-      pricingPolicyToChange.HourlyPrice = price.HourlyPrice;
+      foreach (var updatedPrice in updatedPrices)
+      {
+        var existingPrice = await _context.Prices.FindAsync(updatedPrice.Type);
+        existingPrice?.HourlyPrice = updatedPrice.HourlyPrice;
+      }
       await _context.SaveChangesAsync();
-
       return NoContent();
     }
-    else
+    catch (Exception ex)
     {
-      return NotFound("Nenhuma política de preços foi encontrada para o tipo de veículo selecionado.");
+      return BadRequest($"Erro ao atualizar preços: {ex.Message}");
     }
   }
 }

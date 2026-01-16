@@ -18,7 +18,7 @@
   <MudSpacer />
 
   <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.DirectionsCarFilled" Color="Color.Primary"
-    Size="Size.Medium" DropShadow="false" Disabled="@buttonDisabled">
+    Size="Size.Medium" DropShadow="false" OnClick="@(() => PatchChangesAsync(allPrices!))" Disabled="@buttonDisabled">
     Salvar Modificações
   </MudButton>
 
