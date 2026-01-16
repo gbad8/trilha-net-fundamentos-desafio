@@ -4,6 +4,6 @@ namespace newFrontend.Client.Services;
 
 public interface IPricesService
 {
-  Task<PriceToReadAndToSet> GetPriceAsync(int id);
+  Task<List<Prices>> GetAllPricesAsync();
   Task<HttpResponseMessage> SetPriceAsync(int id, PriceToReadAndToSet newPrice);
 }

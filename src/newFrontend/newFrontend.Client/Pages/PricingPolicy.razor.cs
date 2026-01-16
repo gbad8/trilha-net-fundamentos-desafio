@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Reflection.Metadata;
 using Parking.Shared.Models;
 
 namespace newFrontend.Client.Pages;
@@ -6,25 +7,19 @@ namespace newFrontend.Client.Pages;
 public partial class PrincingPolicy
 {
   private readonly CultureInfo culture = CultureInfo.DefaultThreadCurrentCulture!;
+  private bool buttonDisabled = true;
   public decimal priceForCarUser;
   public decimal priceForMotorcycleUser;
-  PriceToReadAndToSet? priceForCar;
-  PriceToReadAndToSet? priceForMotorcycle;
+  private List<Prices>? allPrices;
 
   protected override async Task OnInitializedAsync()
   {
     try
     {
-      Task<PriceToReadAndToSet> taskForCar = PricesService.GetPriceAsync((int)VehicleType.Car);
-      Task<PriceToReadAndToSet> taskForMotorcycle = PricesService.GetPriceAsync((int)VehicleType.Motorcycle);
+      allPrices = await PricesService.GetAllPricesAsync();
 
-      await Task.WhenAll(taskForCar, taskForMotorcycle);
-
-      priceForCar = await taskForCar;
-      priceForMotorcycle = await taskForMotorcycle;
-
-      priceForCarUser = priceForCar.HourlyPrice;
-      priceForMotorcycleUser = priceForMotorcycle.HourlyPrice;
+      priceForCarUser = allPrices.FirstOrDefault(p => p.Type == VehicleType.Car)?.HourlyPrice ?? 0;
+      priceForMotorcycleUser = allPrices.FirstOrDefault(p => p.Type == VehicleType.Motorcycle)?.HourlyPrice ?? 0;
     }
     catch (Exception ex)
     {
@@ -32,9 +27,27 @@ public partial class PrincingPolicy
     }
   }
 
-  public bool IsDisable()
+  private decimal GetPriceValue(VehicleType type) => type switch
   {
-    return (priceForCarUser == priceForCar!.HourlyPrice)
-      && (priceForMotorcycleUser == priceForMotorcycle!.HourlyPrice);
+    VehicleType.Car => priceForCarUser,
+    VehicleType.Motorcycle => priceForMotorcycleUser,
+    _ => 0
+  };
+
+  private static string GetVehicleName(VehicleType type) => type switch
+  {
+    VehicleType.Car => "Carros",
+    VehicleType.Motorcycle => "Motocicletas",
+    _ => "Desconhecido"
+  };
+
+  private void OnPriceChange(Prices pricingPolicy)
+  {
+    var originalPrice = GetPriceValue(pricingPolicy.Type);
+
+    if (pricingPolicy.HourlyPrice != originalPrice)
+      buttonDisabled = false;
+
+    StateHasChanged();
   }
 }

@@ -7,11 +7,12 @@ public class PricesService(HttpClient http) : IPricesService
 {
   private readonly HttpClient _http = http;
 
-  public async Task<PriceToReadAndToSet> GetPriceAsync(int id)
+  public async Task<List<Prices>> GetAllPricesAsync()
   {
-    return await _http.GetFromJsonAsync<PriceToReadAndToSet>($"api/prices/{id}")
-      ?? throw new InvalidOperationException("Nenhuma política de preços foi encontrada para o tipo de veículo selecionado.");
+    return await _http.GetFromJsonAsync<List<Prices>>("api/prices")
+      ?? throw new InvalidOperationException("Nenhuma política de preços foi encontrada. Por favor, entre em contato com o administrator do sistema.");
   }
+
   public async Task<HttpResponseMessage> SetPriceAsync(int id, PriceToReadAndToSet newPrice)
   {
     return await _http.PatchAsJsonAsync($"api/prices/{id}", newPrice);

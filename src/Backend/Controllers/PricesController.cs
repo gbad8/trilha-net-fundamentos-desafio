@@ -16,31 +16,11 @@ public class PricesController(VeiculoContext context, IParkingService service) :
   [Tags("Pricing Policy")]
   [EndpointName("GetAllPricingPolicy")]
   [EndpointSummary("Get all the prices")]
-  [EndpointDescription("This endpoint gets the pricing policy for all registered vehicle types. It serves only for documentation purposes.")]
+  [EndpointDescription("This endpoint gets the pricing policy for all registered vehicle types. It is called by the frontend, who iterates over the list creating cards with slides to show and to change the price.")]
   [HttpGet]
   public async Task<ActionResult<IEnumerable<Prices>>> GetPrices()
   {
     return await _context.Prices.ToListAsync();
-  }
-
-  [Tags("Pricing Policy")]
-  [EndpointName("GetPricingPolicyByType")]
-  [EndpointSummary("Gets price by type")]
-  [EndpointDescription("This endpoint returns the pricing policy for the specified vehicle type")]
-  [HttpGet("{id}")]
-  public async Task<ActionResult<PriceToReadAndToSet>> GetPricesByType(int id)
-  {
-    var typeToGet = _service.GetVehicleType(id);
-    var prices = await _context.Prices.FindAsync(typeToGet);
-
-    if (prices == null)
-    {
-      return NotFound("Nenhuma política de preços foi encontrada para o tipo de veículo selecionado.");
-    }
-
-    var priceDTO = prices.Adapt<PriceToReadAndToSet>();
-
-    return priceDTO;
   }
 
   [Tags("Pricing Policy")]

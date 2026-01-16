@@ -18,7 +18,7 @@
   <MudSpacer />
 
   <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.DirectionsCarFilled" Color="Color.Primary"
-    Size="Size.Medium" DropShadow="false" Disabled="@(IsDisable())">
+    Size="Size.Medium" DropShadow="false" Disabled="@buttonDisabled">
     Salvar Modificações
   </MudButton>
 
@@ -30,19 +30,31 @@
 
 <MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4 pb-28">
   <MudStack Spacing="4" Justify="Justify.Center">
-    <MudCard Class="rounded-lg pa-4" Outlined="true" Elevation="25">
-      <MudSlider Size="Size.Medium" T="decimal" @bind-Value="priceForCarUser" ValueLabel="true" Step="0.5m"
-        Variant="Variant.Filled" Culture="@culture" ValueLabelFormat="C" Min="0" Max="50">
-        <MudText Typo="Typo.h6"> <b>Carros:</b> @priceForCarUser.ToString("C")/hora</MudText>
-      </MudSlider>
-    </MudCard>
 
-    <MudCard Class="rounded-lg pa-4" Outlined="true" Elevation="25">
-      <MudSlider Size="Size.Medium" T="decimal" @bind-Value="priceForMotorcycleUser" ValueLabel="true" Step="0.5m"
-        Variant="Variant.Filled" Culture="@culture" ValueLabelFormat="C" Min="0" Max="50">
-        <MudText Typo="Typo.h6"><b>Motocicletas:</b> @priceForMotorcycleUser.ToString("C")/hora</MudText>
-      </MudSlider>
-    </MudCard>
+    @if (allPrices is null)
+    {
+      <MudProgressCircular Indeterminate="true" />
+      <MudText> Carregando preços...</MudText>
+    }
+    else if (!allPrices.Any())
+    {
+      <MudAlert Severity="Severity.Warning">Nenhum preço foi configurado.</MudAlert>
+    }
+    else
+    {
+      @foreach (var price in allPrices)
+      {
+        <MudCard Class="rounded-lg pa-4" Outlined="true" Elevation="25">
+          <MudSlider onchange="@(() => OnPriceChange(price))" Size="Size.Medium" T="decimal"
+            @bind-Value="@price.HourlyPrice" ValueLabel="true" Step="0.5m" Variant="Variant.Filled" Culture="@culture"
+            ValueLabelFormat="C" Min="0" Max="50">
+            <MudText Typo="Typo.h6"> <b>@GetVehicleName(price.Type):</b> @price.HourlyPrice.ToString("C")/hora
+            </MudText>
+          </MudSlider>
+        </MudCard>
+      }
+    }
   </MudStack>
+
   <MudSpacer />
 </MudContainer>
