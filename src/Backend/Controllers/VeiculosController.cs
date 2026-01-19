@@ -93,11 +93,11 @@ public class VeiculosController(IParkingService service) : ControllerBase
   [EndpointDescription("After confirming the vehicle's data, the operator clicks the confirmation button, that sends a request to this endpoint with the vehicle for checkout")]
   [ProducesResponseType(StatusCodes.Status404NotFound, Description = "Requested vehicle was not found in the parking.")]
   [HttpPatch("checkout")]
-  public async Task<IActionResult> Checkout(VeiculoToUptade veiculotoCheckout)
+  public async Task<IActionResult> Checkout(VeiculoToUptade veiculoToCheckout)
   {
     try
     {
-      await _service.CheckoutAsync(veiculotoCheckout);
+      await _service.CheckoutAsync(veiculoToCheckout);
       return NoContent();
     }
     catch (InvalidOperationException ex)

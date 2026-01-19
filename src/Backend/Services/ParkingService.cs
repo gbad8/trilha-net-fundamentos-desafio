@@ -104,16 +104,13 @@ public class ParkingService(TimeProvider timeProvider, VeiculoContext context) :
     return veiculo;
   }
 
-  public async Task CheckoutAsync(VeiculoToUptade veiculotoCheckout)
+  public async Task CheckoutAsync(VeiculoToUptade veiculoToCheckout)
   {
     var veiculoBanco = await _context.Veiculos
                                   .Include(v => v.PricingPolicy)
-                                  .SingleAsync(v => v.Id == veiculotoCheckout.Id);
+                                  .SingleAsync(v => v.Id == veiculoToCheckout.Id);
 
-    if (veiculoBanco == null)
-      throw new InvalidOperationException("Veículo não encontrado");
-
-    CheckingOut(veiculoBanco, veiculotoCheckout.DepartureTime);
+    CheckingOut(veiculoBanco, veiculoToCheckout.DepartureTime);
     await _context.SaveChangesAsync();
   }
 
