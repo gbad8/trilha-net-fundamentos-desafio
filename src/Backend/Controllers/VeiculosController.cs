@@ -1,16 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Parking.Shared.Models;
-using trilha_net_fundamentos_desafio.Context;
-using Microsoft.EntityFrameworkCore;
 using trilha_net_fundamentos_desafio.Services;
-using Mapster;
 
 namespace trilha_net_fundamentos_desafio.Controllers;
 
 [Route("api/[controller]")]
-public class VeiculosController(VeiculoContext context, IParkingService service) : ControllerBase
+public class VeiculosController(IParkingService service) : ControllerBase
 {
-  private readonly VeiculoContext _context = context;
   private readonly IParkingService _service = service;
 
   [Tags("Make Check-in")]
@@ -21,13 +17,15 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   [HttpPost("checkin")]
   public async Task<IActionResult> Checkin(VeiculoToCreate newVeiculo)
   {
-    var veiculo = newVeiculo.Adapt<Veiculo>();
-
-    _service.CheckingIn(veiculo);
-    _context.Add(veiculo);
-    await _context.SaveChangesAsync();
-
-    return CreatedAtAction(nameof(GetVehicleById), new { id = veiculo.Id }, veiculo);
+    try
+    {
+      var veiculo = await _service.CheckinAsync(newVeiculo);
+      return CreatedAtAction(nameof(GetVehicleById), new { id = veiculo.Id }, veiculo);
+    }
+    catch (Exception ex)
+    {
+      return BadRequest(ex.Message);
+    }
   }
 
   [Tags("Parked Vehicles")]
@@ -37,19 +35,15 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   [HttpGet("overview")]
   public async Task<ActionResult<IEnumerable<VeiculoToRead>>> GetParkedVehicles()
   {
-    var veiculos = await _context.Veiculos
-                                 .Include(v => v.PricingPolicy)
-                                 .Where(v => v.DepartureTime == null)
-                                 .ToListAsync();
-
-    foreach (Veiculo veiculo in veiculos)
+    try
     {
-      veiculo.TicketPrice = _service.CalculateTicketPrice(veiculo);
+      var veiculosToRead = await _service.GetParkedVehiclesAsync();
+      return Ok(veiculosToRead);
     }
-
-    var veiculosToRead = veiculos.Adapt<List<VeiculoToRead>>();
-
-    return veiculosToRead;
+    catch (Exception ex)
+    {
+      return BadRequest(ex.Message);
+    }
   }
 
   [Tags("History of Parked Vehicles")]
@@ -59,12 +53,15 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   [HttpGet("history")]
   public async Task<ActionResult<IEnumerable<Veiculo>>> SearchHistory()
   {
-    var veiculos = await _context.Veiculos
-                                 .Include(v => v.PricingPolicy)
-                                 .Where(v => v.DepartureTime != null)
-                                 .ToListAsync();
-
-    return veiculos;
+    try
+    {
+      var veiculos = await _service.GetVehicleHistoryAsync();
+      return Ok(veiculos);
+    }
+    catch (Exception ex)
+    {
+      return BadRequest(ex.Message);
+    }
   }
 
   [Tags("Make Check-out")]
@@ -75,16 +72,19 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   [HttpGet("checkout-preview/{id}")]
   public async Task<ActionResult<Veiculo>> GetVehicleById(int id)
   {
-    var veiculo = await _context.Veiculos
-                                  .Include(v => v.PricingPolicy)
-                                  .SingleAsync(v => v.Id == id);
-    if (veiculo == null)
-      return NotFound();
+    try
+    {
+      var veiculo = await _service.GetVehicleByIdAsync(id);
 
-    veiculo.DepartureTime = DateTime.Now;
-    veiculo.TicketPrice = _service.CalculateTicketPrice(veiculo);
+      if (veiculo == null)
+        return NotFound();
 
-    return veiculo;
+      return Ok(veiculo);
+    }
+    catch (Exception ex)
+    {
+      return BadRequest(ex.Message);
+    }
   }
 
   [Tags("Make Check-out")]
@@ -95,24 +95,19 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   [HttpPatch("checkout")]
   public async Task<IActionResult> Checkout(VeiculoToUptade veiculotoCheckout)
   {
-    var veiculoBanco = await _context.Veiculos
-                                  .Include(v => v.PricingPolicy)
-                                  .SingleAsync(v => v.Id == veiculotoCheckout.Id);
-
-    if (veiculoBanco == null)
-      return NotFound();
-
     try
     {
-      _service.CheckingOut(veiculoBanco, veiculotoCheckout.DepartureTime);
-      await _context.SaveChangesAsync();
+      await _service.CheckoutAsync(veiculotoCheckout);
       return NoContent();
     }
     catch (InvalidOperationException ex)
     {
       return BadRequest(ex.Message);
     }
-
+    catch (Exception ex)
+    {
+      return BadRequest(ex.Message);
+    }
   }
 
   [Tags("History of Parked Vehicles")]
@@ -123,15 +118,14 @@ public class VeiculosController(VeiculoContext context, IParkingService service)
   [HttpPost("delete")]
   public async Task<IActionResult> DeleteVehiclesInBatch(HashSet<VeiculoToDelete> veiculosToDelete)
   {
-    if (veiculosToDelete == null || veiculosToDelete.Count == 0)
-      return BadRequest("Nenhum carro selecionado");
-
     try
     {
-      var idsToDelete = veiculosToDelete.Select(v => v.Id).ToList();
-
-      await _context.Veiculos.Where(v => idsToDelete.Contains(v.Id)).ExecuteDeleteAsync();
+      await _service.DeleteVehiclesInBatchAsync(veiculosToDelete);
       return NoContent();
+    }
+    catch (ArgumentException ex)
+    {
+      return BadRequest(ex.Message);
     }
     catch (Exception ex)
     {

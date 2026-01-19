@@ -1,10 +1,14 @@
+using Mapster;
+using Microsoft.EntityFrameworkCore;
 using Parking.Shared.Models;
+using trilha_net_fundamentos_desafio.Context;
+
 namespace trilha_net_fundamentos_desafio.Services;
 
-public class ParkingService(TimeProvider timeProvider) : IParkingService
+public class ParkingService(TimeProvider timeProvider, VeiculoContext context) : IParkingService
 {
-
   private readonly TimeProvider _timeProvider = timeProvider;
+  private readonly VeiculoContext _context = context;
 
   public void CheckingIn(Veiculo veiculo)
   {
@@ -46,5 +50,79 @@ public class ParkingService(TimeProvider timeProvider) : IParkingService
       1 => VehicleType.Motorcycle,
       _ => throw new ArgumentException("Não existe nenhuma política de preços para o veículo informado.")
     };
+  }
+
+  public async Task<Veiculo> CheckinAsync(VeiculoToCreate newVeiculo)
+  {
+    var veiculo = newVeiculo.Adapt<Veiculo>();
+    CheckingIn(veiculo);
+
+    _context.Add(veiculo);
+    await _context.SaveChangesAsync();
+
+    return veiculo;
+  }
+
+  public async Task<IEnumerable<VeiculoToRead>> GetParkedVehiclesAsync()
+  {
+    var veiculos = await _context.Veiculos
+                                 .Include(v => v.PricingPolicy)
+                                 .Where(v => v.DepartureTime == null)
+                                 .ToListAsync();
+
+    foreach (Veiculo veiculo in veiculos)
+    {
+      veiculo.TicketPrice = CalculateTicketPrice(veiculo);
+    }
+
+    var veiculosToRead = veiculos.Adapt<List<VeiculoToRead>>();
+    return veiculosToRead;
+  }
+
+  public async Task<IEnumerable<Veiculo>> GetVehicleHistoryAsync()
+  {
+    var veiculos = await _context.Veiculos
+                                 .Include(v => v.PricingPolicy)
+                                 .Where(v => v.DepartureTime != null)
+                                 .ToListAsync();
+
+    return veiculos;
+  }
+
+  public async Task<Veiculo?> GetVehicleByIdAsync(int id)
+  {
+    var veiculo = await _context.Veiculos
+                                .Include(v => v.PricingPolicy)
+                                .SingleOrDefaultAsync(v => v.Id == id);
+
+    if (veiculo != null)
+    {
+      veiculo.DepartureTime = DateTime.Now;
+      veiculo.TicketPrice = CalculateTicketPrice(veiculo);
+    }
+
+    return veiculo;
+  }
+
+  public async Task CheckoutAsync(VeiculoToUptade veiculotoCheckout)
+  {
+    var veiculoBanco = await _context.Veiculos
+                                  .Include(v => v.PricingPolicy)
+                                  .SingleAsync(v => v.Id == veiculotoCheckout.Id);
+
+    if (veiculoBanco == null)
+      throw new InvalidOperationException("Veículo não encontrado");
+
+    CheckingOut(veiculoBanco, veiculotoCheckout.DepartureTime);
+    await _context.SaveChangesAsync();
+  }
+
+  public async Task DeleteVehiclesInBatchAsync(HashSet<VeiculoToDelete> veiculosToDelete)
+  {
+    if (veiculosToDelete == null || veiculosToDelete.Count == 0)
+      throw new ArgumentException("Nenhum carro selecionado");
+
+    var idsToDelete = veiculosToDelete.Select(v => v.Id).ToList();
+    await _context.Veiculos.Where(v => idsToDelete.Contains(v.Id)).ExecuteDeleteAsync();
   }
 }
