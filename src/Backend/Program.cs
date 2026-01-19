@@ -16,6 +16,7 @@ builder.Services.AddDbContext<VeiculoContext>(options =>
 
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddScoped<IParkingService, ParkingService>();
+builder.Services.AddScoped<IPricesService, PricesService>();
 builder.Services.AddControllers();
 builder.Services.AddOpenApi(options =>
     {

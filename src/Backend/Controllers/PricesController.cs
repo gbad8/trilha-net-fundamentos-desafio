@@ -1,16 +1,13 @@
-using Mapster;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Parking.Shared.Models;
-using trilha_net_fundamentos_desafio.Context;
 using trilha_net_fundamentos_desafio.Services;
 
 namespace trilha_net_fundamentos_desafio.Controllers;
 
 [Route("api/[controller]")]
-public class PricesController(VeiculoContext context) : ControllerBase
+public class PricesController(IPricesService pricesService) : ControllerBase
 {
-  private readonly VeiculoContext _context = context;
+  private readonly IPricesService _pricesService = pricesService;
 
   [Tags("Pricing Policy")]
   [EndpointName("GetAllPricingPolicy")]
@@ -19,7 +16,8 @@ public class PricesController(VeiculoContext context) : ControllerBase
   [HttpGet]
   public async Task<ActionResult<IEnumerable<Prices>>> GetPrices()
   {
-    return await _context.Prices.ToListAsync();
+    var prices = await _pricesService.GetAllPricesAsync();
+    return Ok(prices);
   }
 
   [Tags("Pricing Policy")]
@@ -31,12 +29,7 @@ public class PricesController(VeiculoContext context) : ControllerBase
   {
     try
     {
-      foreach (var updatedPrice in updatedPrices)
-      {
-        var existingPrice = await _context.Prices.FindAsync(updatedPrice.Type);
-        existingPrice?.HourlyPrice = updatedPrice.HourlyPrice;
-      }
-      await _context.SaveChangesAsync();
+      await _pricesService.UpdatePricesAsync(updatedPrices);
       return NoContent();
     }
     catch (Exception ex)
