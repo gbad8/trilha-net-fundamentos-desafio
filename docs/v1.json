@@ -16,6 +16,89 @@
     }
   ],
   "paths": {
+    "/api/Prices": {
+      "get": {
+        "tags": [
+          "Pricing Policy"
+        ],
+        "summary": "Get all the prices",
+        "description": "This endpoint gets the pricing policy for all registered vehicle types. It is called by the frontend, who iterates over the list creating cards with slides to show and to change the price.",
+        "operationId": "GetAllPricingPolicy",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Prices"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Prices"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Prices"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Pricing Policy"
+        ],
+        "summary": "Sets a new pricing policy",
+        "description": "This endpoint updates the specified vehicle type with a new hourly price.",
+        "operationId": "SetPricingPolicy",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Prices"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Prices"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Prices"
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
     "/api/Veiculos/checkin": {
       "post": {
         "tags": [
@@ -313,6 +396,25 @@
   },
   "components": {
     "schemas": {
+      "Prices": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "The enum VehicleType is the primary key itself",
+            "$ref": "#/components/schemas/VehicleType"
+          },
+          "hourlyPrice": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+            "type": [
+              "number",
+              "string"
+            ],
+            "description": "Thats the property that's going to changed from the user's interface.",
+            "format": "double"
+          }
+        },
+        "description": "This class represents the pricing policy that can be changed from the user's interface.\nThe Hourly price is set independently for each vehicle type and is in a one-to-many\nrelationship with the Veiculos model."
+      },
       "ProblemDetails": {
         "type": "object",
         "properties": {
@@ -379,8 +481,12 @@
             "description": "The Vehicle plate is the most important identifyer, but it's utility is simply visual.\nThe user can identify and search cars based on this identification.`"
           },
           "type": {
-            "description": "The Vehicle type identifies whether the vehicle isa car or a motorcycle.",
+            "description": "The Vehicle type identifies whether the vehicle is a car or a motorcycle.\nThis is the FK for the Prices Model.",
             "$ref": "#/components/schemas/VehicleType"
+          },
+          "pricingPolicy": {
+            "description": "This property represents the current hourly price exchanged for each type of vehicle.\nThats the EF Core's navigation to the Prices Model.",
+            "$ref": "#/components/schemas/Prices"
           },
           "entryTime": {
             "type": "string",
@@ -394,6 +500,16 @@
             ],
             "description": "Together with the EntryTime, is calculated by a service called by the endppoint.",
             "format": "date-time"
+          },
+          "effectiveHourlyPrice": {
+            "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
+            "type": [
+              "null",
+              "number",
+              "string"
+            ],
+            "description": "The hourly price effectvely exchanged at the checkout.\nOn the checkout, this property recieves a snapshot of the 'PricingPolicy' property.",
+            "format": "double"
           },
           "ticketPrice": {
             "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$",
@@ -515,6 +631,9 @@
     }
   },
   "tags": [
+    {
+      "name": "Pricing Policy"
+    },
     {
       "name": "Make Check-in"
     },
