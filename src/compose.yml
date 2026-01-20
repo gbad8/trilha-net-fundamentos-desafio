@@ -39,14 +39,16 @@ services:
         restart: true
 
   db:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+    image: mcr.microsoft.com/azure-sql-edge
+    user: root
+    cap_add:
+      - SYS_PTRACE
     environment:
-      - ACCEPT_EULA=Y
+      - ACCEPT_EULA=1
       - MSSQL_SA_PASSWORD=TivitDioBootcamp*
-      - MSSQL_PID=Express
     hostname: "db"
     ports:
-      - 1433:1433
+      - "1433:1433"
     volumes:
       - mssql-volume:/var/opt/mssql
     networks:
