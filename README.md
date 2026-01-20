@@ -89,3 +89,16 @@ A infraestrutura foi desenhada para ser executada via Docker, eliminando a neces
 3. **Acesse as interfaces:**
    * **Frontend (Aplicação):** [http://localhost:5001](http://localhost:5001)
    * **Backend (Scalar/Docs):** [http://localhost:8000/scalar](http://localhost:8000/scalar/)
+  
+## 🗺️ Roadmap de Evolução
+
+Este projeto foi desenvolvido como um desafio técnico inicial. Tenho plena consciência de que a aplicação ainda carece de implementações necessárias para atingir um nível de produção.
+
+No momento, meu foco principal está voltado ao desenvolvimento dos projetos subsequentes do **Bootcamp DIO/TIVIT**, mas este repositório receberá atualizações contínuas assim que os próximos projetos do bootcamp forem concluídos.
+
+### 🏗️ Próximas Implementações:
+
+* **Validações:** Implementar lógica para validação de formatos de placa (Padrão Mercosul e Antigo).
+* **Testes Unitários 🚧 (Em andamento):** Cobertura de testes com xUnit para garantir a confiabilidade das regras de negócio.
+* **Tratamento de Exceções:** Implementação de um middleware global para tratamento de erros e logs.
+* **Deploy na Nuvem:** Configuração de CI/CD e hospedagem da API/Web App no Azure ou AWS (estou estudando para o AZ-900, então o deploy servirá para praticar os conceitos aprendidos em minha preparação). 
