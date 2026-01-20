@@ -27,7 +27,10 @@ Transformei a aplicação console monolítica em uma solução **Fullstack Conta
 ## 📹 Demo da aplicação:
 
 
-https://github.com/user-attachments/assets/88e3dba4-1303-44d3-a173-681ccfb9c1ad
+
+https://github.com/user-attachments/assets/25641d6a-b564-4736-884d-b22088ecd015
+
+
 
 
 ## 📖 Documentação da API
