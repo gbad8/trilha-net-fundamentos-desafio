@@ -23,37 +23,50 @@ Após concluir a implementação básica em console, que se encontra disponível
 
 Transformei a aplicação console monolítica em uma solução **Fullstack Containerizada**.
 
+
+## 📹 Demo da aplicação:
+
+
+https://github.com/user-attachments/assets/88e3dba4-1303-44d3-a173-681ccfb9c1ad
+
+
+## 📖 Documentação da API
+   * Página estática da [documentação](https://gbad8.github.io/trilha-net-fundamentos-desafio/).
+   * Para testar os endpoints, execute a aplicação utilizando o passo a passo da sessão abaixo "Como Executar"
+
+
 ### Comparativo: O que mudou?
 
 | Característica | Proposta Original (Console) | Minha Implementação (Fullstack) |
 | :--- | :--- | :--- |
 | **Interface** | Menu de Texto (Console) | **Blazor WebAssembly** |
-| **Lógica** | Classe local `Estacionamento.cs` | **API RESTful** (.NET 9 Controller) |
-| **Persistência** | `List<string>` (Memória Volátil) | **SQL Server** + **Entity Framework Core** |
+| **Lógica** | Classe local `Estacionamento.cs` | **API RESTful** (.NET 10 Controller) |
+| **Persistência** | `List<string>` (Memória Volátil) | **Azure SQL Edge [¹]** + **Entity Framework Core** |
 | **Estrutura** | Monolito Simples | **Docker Compose** (Multi-container) |
-| **Modelagem** | Apenas Placa (string) | Entidade `Veiculo` (ID, Placa, Horas, Timestamp) |
+| **Modelagem** | Apenas Placa (string) | Entidade `Veiculo` (ID, Placa, Horas, Preço, etc.) |
+
+[¹]: Utilizei no início o SQL Server, no entanto, sua imagem pede muita memória RAM e exige configurações adicionais para aqueles que testarão a aplicação por meio do Docker Desktop no Windows. Portanto, optei por transicionar para o Azure SQL Edge, mesmo sabendo que o serviço foi descontinuado pela Microsoft em setembro de 2025. Em produção, ele seria trocado pelo Azure SQL Database.
 
 ## 🛠 Arquitetura da Solução
 
 O projeto agora opera com três serviços principais orquestrados:
 
 1.  **Backend (API):**
-    * Feito com base na imagem oficial do .NET SDK 9.0 da Microsoft
-    * Substitui a classe `Estacionamento` original por um `Controller` de API.
+    * Feito com base na imagem oficial do [.NET SDK 10.0](https://hub.docker.com/r/microsoft/dotnet-sdk) da Microsoft
+    * Substitui a classe `Estacionamento` original por uma classe `Controller`.
     * Implementa o cálculo de cobrança e regras de negócio.
-    * Conecta-se ao SQL Server via Entity Framework.
+    * Conecta-se ao banco de dados via Entity Framework.
 3.  **Frontend (Client):**
-    * Feito com base na imagem oficial do .NET SDK 9.0 da Microsoft.
+    * Feito com base na imagem oficial do [.NET SDK 9.0](https://hub.docker.com/r/microsoft/dotnet-sdk) da Microsoft.
     * Aplicação Blazor WebAssembly que consome a API.
+    * Utiliza a biblioteca [MudBlazor](https://mudblazor.com).
     * Permite a visualização/interação em tempo real dos veículos estacionados.
 5. **Banco de dados**:
-    * Feito com base na imagem oficial do SQL Server da Microsoft.
+    * Feito com base na imagem oficial do [Azure SQL Edge](https://hub.docker.com/r/microsoft/azure-sql-edge) da Microsoft.
     * Integração feita com o Entity Framework.
-    * Substitui o uso de memória local, fazendo persistir os dados dos veículos.
+    * Substitui o uso de memória volátil, fazendo persistir os dados dos veículos.
 
-## 📖 Consulte a Documentação da API
-   * Página estática da [documentação](https://gbad8.github.io/trilha-net-fundamentos-desafio/).
-   * Para testar os endpoints, execute a aplicação utilizando o passo a passo da sessão abaixo "Como Executar"
+
 
 ## ⚙️ Como Executar
 
@@ -69,10 +82,10 @@ A infraestrutura foi desenhada para ser executada via Docker, eliminando a neces
    git clone https://github.com/gbad8/trilha-net-fundamentos-desafio.git
    ```
 
-2. **Suba o ambiente:** Na raiz do projeto (onde está o arquivo compose.yml), execute:
+2. **Suba o ambiente:** Na pasta src/ do projeto (onde está o arquivo compose.yml), execute:
    ```
    docker compose up
    ```
 3. **Acesse as interfaces:**
    * **Frontend (Aplicação):** [http://localhost:5001](http://localhost:5001)
-   * **Backend (Swagger/Docs):** [http://localhost:8000/swagger](http://localhost:8000/scalar/)
+   * **Backend (Scalar/Docs):** [http://localhost:8000/scalar](http://localhost:8000/scalar/)
